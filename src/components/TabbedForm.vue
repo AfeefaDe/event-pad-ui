@@ -25,7 +25,7 @@
 
         <div class="tabFooter">
           <button class="inputStyle button prevButton" @click="decreaseProgress()">Zurück</button>
-          <button class="inputStyle button nextButton" @click="increaseProgress()">Weiter</button>          
+          <button class="inputStyle button nextButton" @click="saveEvent">Weiter</button>
         </div>
     </div>
     <div class="progressTab" v-show="currentTabNumber == 2">
@@ -69,6 +69,10 @@ export default {
       if (this.currentTabNumber > 0) {
         this.currentTabNumber--
       }
+    },
+    saveEvent: function () {
+      this.$emit('saveActionTriggered')
+      this.increaseProgress()
     }
   }
 }
@@ -110,7 +114,7 @@ export default {
     left: 0;
     height: 20px;
     width: 0;
-    background: $blue;
+    background: $gray;
   }
   .third0 {
     width: 33%;
@@ -120,6 +124,7 @@ export default {
   }
   .third2 {
     width: 100%;
+    background: $green;
   }
 }
 .nextButton {

@@ -5,7 +5,7 @@
       <h2>Neues Treffen anlegen</h2>
       <a href="/"><i class="material-icons">cancel</i></a>
     </div>
-    <tabbed-form :eventId="eventId">
+    <tabbed-form :eventId="eventId" @saveActionTriggered="createEvent">
       <div slot="tab0">
         <label for="title">Title of the Event</label>
         <input class="inputStyle" type="text" id="title" v-model="title" placeholder="Event Title" autofocus>
@@ -52,8 +52,8 @@ export default {
     }
   },
   methods: {
-    createPad: function () {
-      // @t0d0: create Pad
+    createEvent: function () {
+      console.log('Create Event!')
     }
   }
 }

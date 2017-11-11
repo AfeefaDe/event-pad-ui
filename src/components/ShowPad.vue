@@ -1,26 +1,30 @@
 <template>
   <div>
-    <!-- todo: list events -->
+    <event-link-clipboard :link="eventId">
+    </event-link-clipboard>
   </div>
 </template>
 
 <script>
+import EventLinkClipboard from '@/components/EventLinkClipboard'
+
 export default {
   name: 'ShowPad',
+  components: {EventLinkClipboard},
   data () {
     return {
-      padID: false
+      eventId: false
     }
   },
   created: function () {
     if (this.$route.params.id) {
-      this.padID = this.$route.params.id
+      this.eventId = this.$route.params.id
       this.loadPadInfo()
     }
   },
   methods: {
     loadPadInfo: function () {
-      console.debug('TODO: load Pad Info for: ', this.padID)
+      console.debug('TODO: load Pad Info for: ', this.eventId)
     }
   }
 }

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import ShowPad from '@/components/ShowPad'
 import CreatePad from '@/components/CreatePad'
+import LandingPage from '@/components/LandingPage'
 
 Vue.use(Router)
 
@@ -11,14 +12,17 @@ export default new Router({
     {
       path: '/',
       name: 'main',
-      component: CreatePad,
-      meta: { navTitle: 'Create New Event Pad' }
+      component: LandingPage
+    },
+    {
+      path: '/new',
+      name: 'new',
+      component: CreatePad
     },
     {
       path: '/pad/:id',
       name: 'show',
-      component: ShowPad,
-      meta: { navTitle: 'Show Event Pad' }
+      component: ShowPad
     }
   ]
 })

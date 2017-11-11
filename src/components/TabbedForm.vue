@@ -109,7 +109,7 @@ export default {
   position: relative;
   .progressBar {
     position: relative;
-    transition: width ease 0.3s;
+    transition: width ease 0.6s;
     bottom: 0;
     left: 0;
     height: 20px;
@@ -117,10 +117,10 @@ export default {
     background: $gray;
   }
   .third0 {
-    width: 33%;
+    width: 5%;
   }
   .third1 {
-    width: 66%;
+    width: 50%;
   }
   .third2 {
     width: 100%;

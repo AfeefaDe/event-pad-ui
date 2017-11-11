@@ -3,26 +3,31 @@
   <div class="content">
     <div class="createHeader">
       <h2>Neues Treffen anlegen</h2>
-      <a href="/"><i class="material-icons">cancel</i></a>
     </div>
     <tabbed-form :eventId="eventId" @saveActionTriggered="createEvent">
       <div slot="tab0">
-        <label for="title">Title of the Event</label>
-        <input class="inputStyle" type="text" id="title" v-model="title" placeholder="Event Title" autofocus>
+        <label for="title">Titel des Treffens</label>
+        <input class="inputStyle" type="text" id="title" v-model="title" placeholder="Titel" autofocus>
 
-        <label for="place">Place of the Event</label>
-        <input class="inputStyle" type="text" id="place" v-model="place" placeholder="Event Place">
+        <label for="host">Veranstalter des Treffens</label>
+        <input class="inputStyle" type="text" id="host" v-model="host" placeholder="Veranstalter" autofocus>
 
-        <label for="description">Agenda of the event</label>
-        <textarea class="inputStyle" id="description" v-model="description" rows="10" cols="20" placeholder="Event Description"></textarea>
+        <label for="place">Ort des Treffens</label>
+        <input class="inputStyle" type="text" id="place" v-model="place" placeholder="Ort">
 
-        <label for="date">Date of the Event</label>
-        <input class="inputStyle" type="datetime-local" v-model="date" id="date" placeholder="Event Date">
+        <label for="description">Agenda des Treffens</label>
+        <textarea class="inputStyle" id="description" v-model="description" rows="10" cols="20" placeholder="Agenda"></textarea>
+
+        <label for="date_start">Startdatum des Treffens</label>
+        <input class="inputStyle" type="datetime-local" v-model="date_start" id="date_start" placeholder="Startdatum">
+
+        <label for="date_end">Enddatum des Treffens</label>
+        <input class="inputStyle" type="datetime-local" v-model="date_end" id="date_end" placeholder="Enddatum">
       </div>
 
       <div slot="tab1">
-        <label for="memberName">Please enter your name, that others can recognize you</label>
-        <input class="inputStyle" type="text" id="memberName" v-model="memberName" placeholder="Your Name" autofocus>
+        <label for="memberName">Wie lautet dein Name?</label>
+        <input class="inputStyle" type="text" id="memberName" v-model="memberName" placeholder="Dein Name" autofocus>
       </div>
 
       <div slot="tab2">
@@ -47,13 +52,24 @@ export default {
       title: '',
       place: '',
       description: '',
-      date: '',
+      date_start: '',
+      date_end: '',
+      host: '',
       eventId: '5nfko4-redaktionstreffen'
     }
   },
   methods: {
     createEvent: function () {
-      console.log('Create Event!')
+      let newEvent = {
+        member: this.memberName,
+        title: this.title,
+        place: this.place,
+        description: this.description,
+        date_end: this.date_end,
+        date_start: this.date_start,
+        host: this.host
+      }
+      console.log('Create Event:', newEvent)
     }
   }
 }

@@ -20,7 +20,7 @@ export default new Router({
       component: CreatePad
     },
     {
-      path: '/pad/:id',
+      path: '/treffen/:id',
       name: 'show',
       component: ShowPad
     }

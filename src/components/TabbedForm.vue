@@ -25,7 +25,7 @@
 
         <div class="tabFooter">
           <button class="inputStyle button prevButton" @click="decreaseProgress()">Zurück</button>
-          <button class="inputStyle button nextButton" @click="increaseProgress()">Weiter</button>
+          <button class="inputStyle button nextButton" @click="increaseProgress()">Weiter</button>          
         </div>
     </div>
     <div class="progressTab" v-show="currentTabNumber == 2">
@@ -34,7 +34,7 @@
 
         <div class="tabFooter">
           <button class="inputStyle button prevButton" @click="decreaseProgress()">Zurück</button>
-          <button class="inputStyle button nextButton" @click="increaseProgress()">Weiter</button>
+          <router-link tag="button" :to="{name: 'show', params: {id: eventId}}" class="inputStyle button">Fertig</router-link>
         </div>
     </div>
   </div>
@@ -43,6 +43,7 @@
 <script>
 export default {
   name: 'TabbedForm',
+  props: ['eventId'],
   data () {
     return {
       tabNames: ['Informationen zum Treffen', 'Persönliche Information', 'Übersicht'],

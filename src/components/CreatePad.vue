@@ -5,7 +5,7 @@
       <h2>Neues Treffen anlegen</h2>
       <a href="/"><i class="material-icons">cancel</i></a>
     </div>
-    <tabbed-form>
+    <tabbed-form :eventId="eventId">
       <div slot="tab0">
         <label for="title">Title of the Event</label>
         <input class="inputStyle" type="text" id="title" v-model="title" placeholder="Event Title" autofocus>
@@ -47,7 +47,8 @@ export default {
       title: '',
       place: '',
       description: '',
-      date: ''
+      date: '',
+      eventId: '5nfko4-redaktionstreffen'
     }
   },
   methods: {

@@ -66,7 +66,6 @@ export default {
   margin: 2em auto;
   a {
     padding: 0.8em 1em 0.7em 1em;
-    border: 2px solid $blue;
     border-radius: 3px;
     display: inline-block;
     text-decoration: none;

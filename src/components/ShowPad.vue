@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     loadPadInfo: function () {
-      console.log('TODO: load Pad Info for: ', this.padID)
+      console.debug('TODO: load Pad Info for: ', this.padID)
     }
   }
 }

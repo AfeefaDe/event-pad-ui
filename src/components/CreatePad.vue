@@ -31,7 +31,8 @@
       </div>
 
       <div slot="tab2">
-        @TODO: ausgeben des Links
+        <event-link-clipboard :link="eventId">
+        </event-link-clipboard>
       </div>
 
     </tabbed-form>
@@ -42,10 +43,11 @@
 
 <script>
 import TabbedForm from '@/components/TabbedForm'
+import EventLinkClipboard from '@/components/EventLinkClipboard'
 
 export default {
   name: 'CreatePad',
-  components: { TabbedForm },
+  components: { TabbedForm, EventLinkClipboard },
   data () {
     return {
       memberName: '',

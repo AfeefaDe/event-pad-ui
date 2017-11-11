@@ -1,13 +1,28 @@
 <template>
   <div>
-    <h1>Event Pad - Show</h1>
     <!-- todo: list events -->
   </div>
 </template>
 
 <script>
 export default {
-  name: 'ShowPad'
+  name: 'ShowPad',
+  data () {
+    return {
+      padID: false
+    }
+  },
+  created: function () {
+    if (this.$route.params.id) {
+      this.padID = this.$route.params.id
+      this.loadPadInfo()
+    }
+  },
+  methods: {
+    loadPadInfo: function () {
+      console.log('TODO: load Pad Info for: ', this.padID)
+    }
+  }
 }
 </script>
 

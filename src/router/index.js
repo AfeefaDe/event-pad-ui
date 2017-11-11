@@ -12,17 +12,20 @@ export default new Router({
     {
       path: '/',
       name: 'main',
-      component: MainView
+      component: MainView,
+      meta: { navTitle: 'Event Pad' }
     },
     {
       path: '/pad/:id',
       name: 'show',
-      component: ShowPad
+      component: ShowPad,
+      meta: { navTitle: 'Show Event Pad' }
     },
     {
       path: '/new',
       name: 'new',
-      component: CreatePad
+      component: CreatePad,
+      meta: { navTitle: 'Create new Event Pad' }
     }
   ]
 })

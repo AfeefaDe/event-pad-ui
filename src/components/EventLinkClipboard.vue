@@ -14,9 +14,11 @@ export default {
       message: ''
     }
   },
-  props: ['link'],
-  created: function () {
-    this.fullLink = 'events.afeefa.de/treffen/' + this.link
+  props: ['event'],
+  computed: {
+    fullLink () {
+      return 'events.afeefa.de/treffen/' + this.event.uri
+    }
   },
   methods: {
     copyToClipboard: function () {

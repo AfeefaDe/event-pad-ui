@@ -4,7 +4,7 @@
     <div class="createHeader">
       <h2>Neues Treffen anlegen</h2>
     </div>
-    <tabbed-form :eventId="eventId" @saveActionTriggered="createEvent">
+    <tabbed-form :event="event" @saveActionTriggered="createEvent">
       <div slot="tab0">
         <label for="title">Titel des Treffens</label>
         <input class="inputStyle" type="text" id="title" v-model="title" placeholder="Titel" autofocus>
@@ -31,7 +31,7 @@
       </div>
 
       <div slot="tab2">
-        <event-link-clipboard :link="eventId">
+        <event-link-clipboard :event="event">
         </event-link-clipboard>
       </div>
 
@@ -44,6 +44,7 @@
 <script>
 import TabbedForm from '@/components/TabbedForm'
 import EventLinkClipboard from '@/components/EventLinkClipboard'
+import Event from '@/models/Event'
 
 export default {
   name: 'CreatePad',
@@ -54,24 +55,31 @@ export default {
       title: '',
       place: '',
       description: '',
-      date_start: '',
-      date_end: '',
+      date_start: new Date(),
+      date_end: new Date(),
       host: '',
-      eventId: '5nfko4-redaktionstreffen'
+      event: new Event()
     }
   },
   methods: {
-    createEvent: function () {
-      let newEvent = {
-        member: this.memberName,
-        title: this.title,
-        place: this.place,
-        description: this.description,
-        date_end: this.date_end,
-        date_start: this.date_start,
-        host: this.host
-      }
+    createEvent () {
+      let newEvent = new Event()
+      newEvent.title = this.title
+      newEvent.host = this.host
+      newEvent.location = this.place
+      newEvent.description = this.description
+      newEvent.date_start = this.date_start
+      newEvent.date_end = this.date_end
+      newEvent.initiator_name = this.memberName
+
       console.log('Create Event:', newEvent)
+
+      this.$http.post('http://backend.afeefa.dev:3002/events', newEvent.serialize()).then(response => {
+        this.event = new Event()
+        this.event.deserialize(response.body)
+      }).catch(response => {
+        console.log('hat nicht geklappt', response)
+      })
     }
   }
 }

@@ -34,7 +34,7 @@
 
         <div class="tabFooter">
           <button class="inputStyle button prevButton" @click="decreaseProgress()">Zurück</button>
-          <router-link tag="button" :to="{name: 'show', params: {id: eventId}}" class="inputStyle button">Ansehen</router-link>
+          <router-link tag="button" :to="{name: 'show', params: {uri: event.uri}}" class="inputStyle button">Ansehen</router-link>
         </div>
     </div>
   </div>
@@ -43,7 +43,7 @@
 <script>
 export default {
   name: 'TabbedForm',
-  props: ['eventId'],
+  props: ['event'],
   data () {
     return {
       tabNames: ['Informationen zum Treffen', 'Persönliche Information', 'Übersicht'],
@@ -80,8 +80,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "~variables";
-
-
 
 .tabFooter {
   display: flex;

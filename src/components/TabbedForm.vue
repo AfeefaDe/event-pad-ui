@@ -34,7 +34,7 @@
 
         <div class="tabFooter">
           <button class="inputStyle button prevButton" @click="decreaseProgress()">Zurück</button>
-          <router-link tag="button" :to="{name: 'show', params: {id: eventId}}" class="inputStyle button">Fertig</router-link>
+          <router-link tag="button" :to="{name: 'show', params: {id: eventId}}" class="inputStyle button">Ansehen</router-link>
         </div>
     </div>
   </div>

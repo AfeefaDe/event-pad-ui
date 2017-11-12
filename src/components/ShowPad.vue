@@ -1,31 +1,27 @@
 <template>
   <div>
-    <event-link-clipboard :link="eventId">
+    <event-link-clipboard :event="event">
     </event-link-clipboard>
   </div>
 </template>
 
 <script>
 import EventLinkClipboard from '@/components/EventLinkClipboard'
+import Event from '@/models/Event'
+import Events from '@/resources/Events'
 
 export default {
   name: 'ShowPad',
   components: {EventLinkClipboard},
   data () {
     return {
-      eventId: false
+      event: new Event()
     }
   },
   created: function () {
-    if (this.$route.params.id) {
-      this.eventId = this.$route.params.id
-      this.loadPadInfo()
-    }
-  },
-  methods: {
-    loadPadInfo: function () {
-      console.debug('TODO: load Pad Info for: ', this.eventId)
-    }
+    Events.getEvent(this.$route.params.uri).then(event => {
+      this.event = event
+    })
   }
 }
 </script>

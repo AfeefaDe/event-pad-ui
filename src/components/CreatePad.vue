@@ -45,19 +45,21 @@
 import TabbedForm from '@/components/TabbedForm'
 import EventLinkClipboard from '@/components/EventLinkClipboard'
 import Event from '@/models/Event'
+import Events from '@/resources/Events'
 
 export default {
   name: 'CreatePad',
   components: { TabbedForm, EventLinkClipboard },
   data () {
     return {
-      memberName: '',
       title: '',
+      host: '',
       place: '',
       description: '',
       date_start: new Date(),
       date_end: new Date(),
-      host: '',
+      memberName: '',
+
       event: new Event()
     }
   },
@@ -71,14 +73,8 @@ export default {
       newEvent.date_start = this.date_start
       newEvent.date_end = this.date_end
       newEvent.initiator_name = this.memberName
-
-      console.log('Create Event:', newEvent)
-
-      this.$http.post('http://backend.afeefa.dev:3002/events', newEvent.serialize()).then(response => {
-        this.event = new Event()
-        this.event.deserialize(response.body)
-      }).catch(response => {
-        console.log('hat nicht geklappt', response)
+      Events.createEvent(newEvent).then(event => {
+        this.event = event
       })
     }
   }

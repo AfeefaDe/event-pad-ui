@@ -1,55 +1,24 @@
-import axios from 'axios'
+import Vue from 'vue'
+import Event from '@/models/Event'
 
 export default class EventsResource {
-  constructor () {
-    this.init(arguments)
+  static createEvent (event) {
+    return Vue.http.post('http://backend.afeefa.dev:3002/events', event.serialize()).then(response => {
+      const event = new Event()
+      event.deserialize(response.body)
+      return event
+    }).catch(response => {
+      console.log('post hat nicht geklappt', response)
+    })
   }
 
-  init () {
-    // this.http = Vue.resource(BASE + 'events{/id}', {}, {update: {method: 'PATCH'}})
-  }
-
-  
-  findItem (id) {
-    axios.get()
-  }
-
-
-  // creates a new model based on the given json response
-  // @see Todos or Search
-  createItem (json) {
-  }
-
-
-  transformList (items) {
-  }
-
-  // deserialized the current item
-  // @see Search
-  // @see Todos or Search
-  deserialize (item, json) {
-    item.deserialize(json)
-  }
-
-  // called after an item has been added
-  // to enable custom resource cache treatment
-  itemAdded (item) {
-  }
-
-  // called after an item has been deleted
-  // to enable custom resource cache treatment
-  itemDeleted (item) {
-  }
-
-  // called after an item has been changed
-  // to enable custom resource cache treatment
-  // use the old item to access the item relations
-  // that have been present prior saving
-  itemSaved (itemOld, item) {
-  }
-
-  // called after attributes of an item have been changed
-  // to enable custom resource cache treatment
-  itemAttributesUpdated (item, attributes) {
+  static getEvent (uri) {
+    return Vue.http.get('http://backend.afeefa.dev:3002/events/' + uri).then(response => {
+      const event = new Event()
+      event.deserialize(response.body)
+      return event
+    }).catch(response => {
+      console.log('get hat nicht geklappt', response)
+    })
   }
 }

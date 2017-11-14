@@ -14,7 +14,7 @@
         </div>
       </div>
     </div>
-    
+
     <event-link-clipboard :event="event">
     </event-link-clipboard>
   </div>
@@ -40,14 +40,14 @@ export default {
     })
   },
   mounted () {
-    var participants = 10
+    var participants = 5
 
     var pattern = Trianglify({
       width: this.$refs.header.offsetWidth,
       height: this.$refs.header.offsetHeight,
-      cell_size: 300 / participants,
-      x_colors: 'Spectral',
-      y_colors: 'Spectral'
+      cell_size: 500 / participants,
+      x_colors: 'GnBu',
+      y_colors: 'GnBu'
     })
     this.$refs.pattern.appendChild(pattern.svg())
     this.$el.querySelector('svg').setAttribute('opacity', 0.5)

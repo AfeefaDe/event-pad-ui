@@ -1,7 +1,8 @@
 <template>
   <div class="EventLinkClipboard">
     <input ref="linkField" :value="fullLink"/><br>
-    <button class="inputStyle button" @click="copyToClipboard()"><i class="material-icons">content_copy</i></button><br>
+    <button class="inputStyle button" @click="copyToClipboard()"><i class="material-icons">content_copy</i></button>
+    <button class="inputStyle button" @click="sendMail()"><i class="material-icons">mail</i></button><br>
     <span v-if="message">{{message}}</span>
   </div>
 </template>
@@ -25,6 +26,9 @@ export default {
       this.$refs.linkField.select()
       document.execCommand('Copy')
       this.message = 'Copied to clipboard ✓'
+    },
+    sendMail: function () {
+      alert('Einladung per Mail versenden')
     }
   }
 }

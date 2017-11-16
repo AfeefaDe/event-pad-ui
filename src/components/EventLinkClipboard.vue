@@ -44,11 +44,13 @@ export default {
 }
 
 input {
-  width: 90%;
+  width: 100%;
   display: inline;
   padding: .5rem;
   text-align: center;
   font-size: .75rem;
+  border: none;
+  background-color: $creme;
 }
 
 button {

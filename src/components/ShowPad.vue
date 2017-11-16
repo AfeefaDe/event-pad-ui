@@ -72,6 +72,7 @@
         <p class="author">Misha um 15:20</p>
         <p>Ich schaff's leider nicht heute. Bin noch länger beim Klienten :/</p>
       </div>
+      <input placeholder="Nachricht schreiben" />
     </div>
 
     <div class="participation-actions">
@@ -241,6 +242,10 @@ p {
   .author {
     font-size: .8rem;
     color: $gray;
+  }
+  input {
+    width: 100%;
+    padding: .5rem;
   }
 
 .participation-actions {

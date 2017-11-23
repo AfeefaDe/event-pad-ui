@@ -88,11 +88,6 @@ h1 {
   color: $black;
 }
 
-label {
-  display: block;
-  font-size: 0.9rem;
-}
-
 .createHeader {
   margin-bottom: 1em;
   h2 {

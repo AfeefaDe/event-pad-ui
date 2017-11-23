@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="progressArea">
+      <div class="progressBarContainer">
+        <div v-bind:class="['progressBar', progressBarClass]"></div>
+      </div>
       <div class="progressHeader">
         <span>{{tabNames[currentTabNumber]}}</span>
         <span class="progressNumber">{{currentTabNumber+1}}/{{currentTabCount+1}}</span>
-      </div>
-      <div class="progressBarContainer">
-        <div v-bind:class="['progressBar', progressBarClass]"></div>
       </div>
     </div>
 
@@ -99,9 +99,12 @@ export default {
   }
 }
 .progressBarContainer {
-  width: 100%;
-  border-radius: 10px;
-  border:  2px solid $lightGray;
+  width: 100vw;
+  position: relative;
+  left: -2vw;
+  /*border-radius: 10px;*/
+  /*border:  2px solid $lightGray;*/
+  background-color: $lightGray;
   height: 20px;
   overflow: hidden;
   position: relative;

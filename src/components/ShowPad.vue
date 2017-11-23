@@ -72,7 +72,7 @@
         <p class="author">Misha um 15:20</p>
         <p>Ich schaff's leider nicht heute. Bin noch länger beim Klienten :/</p>
       </div>
-      <input placeholder="Nachricht schreiben" />
+      <textarea class="inputStyle" rows="3" placeholder="Nachricht schreiben" />
     </div>
 
     <div class="participation-actions">

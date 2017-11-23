@@ -92,12 +92,8 @@ h1 {
   margin-bottom: 1em;
   h2 {
     margin: 0;
+    text-align: center;
   }
-  a {
-    margin-left: auto;
-  }
-  display: flex;
-  align-items: baseline;
 }
 
 

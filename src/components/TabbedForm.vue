@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="progressArea">
-      <div class="progressBarContainer">
-        <div v-bind:class="['progressBar', progressBarClass]"></div>
-      </div>
       <div class="progressHeader">
         <span>{{tabNames[currentTabNumber]}}</span>
         <span class="progressNumber">{{currentTabNumber+1}}/{{currentTabCount+1}}</span>
+      </div>
+      <div class="progressBarContainer">
+        <div v-bind:class="['progressBar', progressBarClass]"></div>
       </div>
     </div>
 

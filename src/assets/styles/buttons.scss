@@ -1,0 +1,48 @@
+.button {
+    width: auto;
+    padding: 0.9em 2em;
+    margin: 2rem auto;
+
+    display: inline-block;
+    
+    border-radius: 3px;
+    border-style: none;
+    cursor: pointer;
+    
+    font-size: 0.9rem;
+  	text-align: center;
+    font-weight: 600;
+    text-transform: uppercase;
+    line-height: 2em;
+
+    transition: background ease 0.4s;
+    background-color: $lightGray;
+
+    &:hover {
+      background: lighten($lightGray, 10);
+			box-shadow: 1px 1px 5px $lightGray;    	
+    }
+
+    a {
+    	text-decoration: none;
+    }
+		
+		/* layout options */
+		&.button-block {
+			display: block;
+		}
+}
+
+/* custom button types */
+.button-primary {
+  background: $blue;
+  color: white;
+  &:hover {
+    background: lighten($blue, 10);
+  }
+}
+
+button {
+	@extend .button;
+	/*may include specific styles to override classic button behaviour*/
+}

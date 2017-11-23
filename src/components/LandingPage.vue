@@ -5,9 +5,7 @@
   </div>
   <div class="content">
     <p class="landingHint">Mit Afeefa Treffen kannst du eine Übersichtseite für deine Veranstaltung erstellen. Ohne Anmeldung und kostenlos kannst du ein Treffen erstellen und den Link mit deinen potenziellen Teilnehmern teilen.</p>
-    <div class="landingButton">
-      <router-link to="new">Treffen erstellen</router-link>
-    </div>
+    <router-link tag="button" class="button-primary button-block" to="new">Treffen erstellen</router-link>
     <div class="footer">
       Ein Projekt von <a href="https://afeefa.de/">Afeefa.de</a>, 2017
     </div>
@@ -60,24 +58,6 @@ export default {
   max-width: 600px;
   margin: 0 auto;
   color: $gray
-}
-.landingButton {
-  text-align: center;
-  margin: 2em auto;
-  a {
-    padding: 0.8em 1em 0.7em 1em;
-    border-radius: 3px;
-    display: inline-block;
-    text-decoration: none;
-    text-transform: uppercase;
-    font-weight: 600;
-    transition: background ease 0.4s;
-    background: $blue;
-    color: white;
-    &:hover {
-      background: lighten($blue, 10);
-    }
-  }
 }
 .footer {
   text-align: right;

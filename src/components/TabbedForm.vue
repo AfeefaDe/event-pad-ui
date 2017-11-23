@@ -15,8 +15,8 @@
         <slot name="tab0"></slot>
 
         <div class="tabFooter">
-          <router-link tag="button" to="/" class="inputStyle button prevButton">Abrechen</router-link>
-          <button class="inputStyle button nextButton" @click="increaseProgress()">Weiter</button>
+          <router-link tag="button" to="/" class="inputStyle button">Abrechen</router-link>
+          <button class="inputStyle button-primary" @click="increaseProgress()">Weiter</button>
         </div>
     </div>
     <div class="progressTab" v-show="currentTabNumber == 1">
@@ -24,8 +24,8 @@
         <slot name="tab1"></slot>
 
         <div class="tabFooter">
-          <button class="inputStyle button prevButton" @click="decreaseProgress()">Zurück</button>
-          <button class="inputStyle button nextButton" @click="saveEvent">Weiter</button>
+          <button class="inputStyle" @click="decreaseProgress()">Zurück</button>
+          <button class="inputStyle button-primary" @click="saveEvent">Weiter</button>
         </div>
     </div>
     <div class="progressTab" v-show="currentTabNumber == 2">
@@ -33,8 +33,8 @@
         <slot name="tab2"></slot>
 
         <div class="tabFooter">
-          <button class="inputStyle button prevButton" @click="decreaseProgress()">Zurück</button>
-          <router-link tag="button" :to="{name: 'show', params: {uri: event.uri}}" class="inputStyle button">Ansehen</router-link>
+          <button class="inputStyle" @click="decreaseProgress()">Zurück</button>
+          <router-link tag="button" :to="{name: 'show', params: {uri: event.uri}}" class="inputStyle button-primary">Ansehen</router-link>
         </div>
     </div>
   </div>
@@ -123,26 +123,6 @@ export default {
   .third2 {
     width: 100%;
     background: $green;
-  }
-}
-.nextButton {
-  background: $blue;
-  color: white;
-  &:hover {
-    background: darken($blue, 10)
-  }
-  &:active {
-    background: darken($blue, 20)
-  }
-}
-.prevButton {
-  background: $gray;
-  color: white;
-  &:hover {
-    background: lighten($gray, 10)
-  }
-  &:active {
-    background: lighten($gray, 20)
   }
 }
 </style>

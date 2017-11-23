@@ -1,5 +1,6 @@
 @import url('https://rsms.me/inter/inter-ui.css');
 @import 'variables';
+@import 'buttons';
 
 body {
   margin: 0;
@@ -41,13 +42,4 @@ input, textarea {
   padding: 0.7em 0.8em 0.6em 0.8em;
   border-radius: 4px;
   font-weight: 600;
-}
-.button {
-    width: auto;
-    padding: 0.9em 3em;
-    font-size: 0.9rem;
-    border-style: none;
-    display: block;
-    cursor: pointer;
-    transition: background ease 0.4s;
 }

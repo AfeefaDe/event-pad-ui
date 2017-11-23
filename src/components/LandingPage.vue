@@ -1,11 +1,11 @@
 <template>
 <div>
   <div class="topBunner">
-      <h2 class="bunnerHeading">Treffen</h2>
+      <h2 class="bunnerHeading">TREFFEN</h2>
   </div>
   <div class="content">
-    <p class="landingHint">Mit Afeefa Treffen kannst du eine Übersichtseite für deine Veranstaltung erstellen. Ohne Anmeldung und kostenlos kannst du ein Treffen erstellen und den Link mit deinen potenziellen Teilnehmern teilen.</p>
-    <router-link tag="button" class="button-primary button-block" to="new">Treffen erstellen</router-link>
+    <p class="landingHint"><strong>Mit TREFFEN von Afeefa organisierst du Treffen effizienter.</strong><br><br>Terminabstimmung, Ort, Anmeldelisten, Materialien und kurzfristige Benachrichtigungen. Hier kommen alle Informationen zusammen und alle Leute sind immer und überall im Bild. Ohne Anmeldung und kostenlos kannst du ein Treffen erstellen und den Link mit deinen potenziellen Teilnehmern teilen.</p>
+    <router-link tag="button" class="button-primary button-block" to="new">Treffen anzetteln</router-link>
     <div class="footer">
       Ein Projekt von <a href="https://afeefa.de/">Afeefa.de</a>, 2017
     </div>
@@ -57,7 +57,8 @@ export default {
   width: 90%;
   max-width: 600px;
   margin: 0 auto;
-  color: $gray
+  color: $gray;
+  text-align: center;
 }
 .footer {
   text-align: right;

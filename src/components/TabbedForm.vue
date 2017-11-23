@@ -2,7 +2,7 @@
   <div>
     <div class="progressArea">
       <div class="progressHeader">
-        <span>{{tabNames[currentTabNumber]}}</span>
+        <!-- <span>{{tabNames[currentTabNumber]}}</span> -->
         <span class="progressNumber">{{currentTabNumber+1}}/{{currentTabCount+1}}</span>
       </div>
       <div class="progressBarContainer">
@@ -32,10 +32,8 @@
 
         <slot name="tab2"></slot>
 
-        <div class="tabFooter">
-          <button class="inputStyle" @click="decreaseProgress()">Zurück</button>
-          <router-link tag="button" :to="{name: 'show', params: {uri: event.uri}}" class="inputStyle button-primary">Ansehen</router-link>
-        </div>
+        <router-link tag="button" :to="{name: 'show', params: {uri: event.uri}}" class="button-block button-primary">Treffen Ansehen</router-link>
+        <!-- <button class="button-block" @click="decreaseProgress()">Zurück</button> -->
     </div>
   </div>
 </template>

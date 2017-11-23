@@ -31,6 +31,10 @@
 		&.button-block {
 			display: block;
 		}
+
+		&.button-small-margin {
+			margin: .5rem auto;
+		}
 }
 
 /* custom button types */
@@ -39,6 +43,22 @@
   color: white;
   &:hover {
     background: lighten($blue, 10);
+  }
+}
+
+.button-green {
+	@extend .button-primary;
+  background: $green;
+  &:hover {
+    background: lighten($green, 10);
+  }
+}
+
+.button-red {
+	@extend .button-primary;
+  background: $red;
+  &:hover {
+    background: lighten($red, 10);
   }
 }
 

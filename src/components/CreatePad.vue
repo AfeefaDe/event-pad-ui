@@ -2,26 +2,26 @@
 <div>
   <div class="content">
     <div class="createHeader">
-      <h2>Neues Treffen anlegen</h2>
+      <h2>Neues Treffen anzetteln</h2>
     </div>
     <tabbed-form :event="event" @saveActionTriggered="createEvent">
       <div slot="tab0">
         <label for="title">Titel des Treffens</label>
         <input class="inputStyle" type="text" id="title" v-model="title" placeholder="Titel" autofocus>
 
-        <label for="host">Veranstalter des Treffens</label>
-        <input class="inputStyle" type="text" id="host" v-model="host" placeholder="Veranstalter" autofocus>
+        <!-- <label for="host">Veranstalter</label> -->
+        <!-- <input class="inputStyle" type="text" id="host" v-model="host" placeholder="Veranstalter" autofocus> -->
 
-        <label for="place">Ort des Treffens</label>
+        <label for="place">Wo findet es statt?</label>
         <input class="inputStyle" type="text" id="place" v-model="place" placeholder="Ort">
 
-        <label for="description">Agenda des Treffens</label>
+        <label for="description">Was wird passieren?</label>
         <textarea class="inputStyle" id="description" v-model="description" rows="10" cols="20" placeholder="Agenda"></textarea>
 
-        <label for="date_start">Startdatum des Treffens</label>
+        <label for="date_start">Wann geht's los?</label>
         <input class="inputStyle" type="datetime-local" v-model="date_start" id="date_start" placeholder="Startdatum">
 
-        <label for="date_end">Enddatum des Treffens</label>
+        <label for="date_end">Wann ist Schluss?</label>
         <input class="inputStyle" type="datetime-local" v-model="date_end" id="date_end" placeholder="Enddatum">
       </div>
 
@@ -31,6 +31,8 @@
       </div>
 
       <div slot="tab2">
+        <p>Fertig!</p>
+        <p>Jetzt gleich Einladungen verschicken:</p>
         <event-link-clipboard :event="event">
         </event-link-clipboard>
       </div>

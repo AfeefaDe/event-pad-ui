@@ -50,37 +50,41 @@
           </ul>
         </div>
       </div>
+    </div>
+
+    <div class="participation-actions">
+      <div class="flex">
+        <button class="button-green button-small-margin" @click="userAction()">Ich komme</button>
+        <button class="button-red button-small-margin" @click="userAction()">Ich komme nicht</button>
+      </div>
+      <button class="button-block button-small-margin" @click="userAction()">Haltet mich auf dem Laufenden</button>
+    </div>
+
+    <div class="info-block share">
+      <h2>Leute einladen</h2>
       <event-link-clipboard :event="event"></event-link-clipboard>
     </div>
 
     <div class="info-block discussion">
       <h2>Diskussion</h2>
       <div class="message">
-        <p class="author">Jens um 23:35</p>
-        <p>Wir sind echt ein geiles Team! Sorry für die vielen Details.</p>
-      </div>
-      <div class="message event-start">- 18:00 Start -</div>
-      <div class="message">
-        <p class="author">Jens um 17:43</p>
-        <p>Wird 10 Min später bei mir.</p>
+        <p class="author">Misha um 15:20</p>
+        <p>Ich schaff's leider nicht heute. Bin noch länger beim Klienten :/</p>
       </div>
       <div class="message">
         <p class="author">Felix um 17:09</p>
         <p>So schönes Wetter! Wir verlegen die Sitzung auf die Wiese vorm Hub.</p>
       </div>
       <div class="message">
-        <p class="author">Misha um 15:20</p>
-        <p>Ich schaff's leider nicht heute. Bin noch länger beim Klienten :/</p>
+        <p class="author">Jens um 17:43</p>
+        <p>Wird 10 Min später bei mir.</p>
+      </div>
+      <div class="message event-start">- 18:00 Start -</div>
+      <div class="message">
+        <p class="author">Jens um 23:35</p>
+        <p>Wir sind echt ein geiles Team! Sorry für die vielen Details.</p>
       </div>
       <textarea class="inputStyle" rows="3" placeholder="Nachricht schreiben" />
-    </div>
-
-    <div class="participation-actions">
-      <div class="flex">
-        <div class="action action-coming" @click="userAction()">Ich komme</div>
-        <div class="action action-not-coming" @click="userAction()">Ich komme nicht</div>
-      </div>
-      <div class="action action-inform" @click="userAction()">Haltet mich auf dem Laufenden</div>
     </div>
   </div>
 </template>
@@ -238,14 +242,14 @@ p {
       font-style: italic;
       text-align: center;
     }
+
   }
   .author {
     font-size: .8rem;
     color: $gray;
   }
-  input {
-    width: 100%;
-    padding: .5rem;
+  textarea {
+    background-color: white;
   }
 
 .participation-actions {
@@ -254,26 +258,5 @@ p {
   .flex {
     display: flex;
   }
-
-  div.action {
-    text-align: center;
-    padding: 1rem;
-    box-sizing: border-box;
-    cursor: pointer;
-  }
-    .action-coming {
-      width: 50%;
-      background-color: $light-green;
-      font-weight: bold;
-    }
-    .action-not-coming {
-      width: 50%;
-      background-color: $light-red;
-      font-weight: bold;
-    }
-    .action-inform {
-      width: 100%;
-      background-color: $creme;
-    }
 }
 </style>

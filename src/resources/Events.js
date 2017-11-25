@@ -3,7 +3,7 @@ import Event from '@/models/Event'
 
 export default class EventsResource {
   static createEvent (event) {
-    return Vue.http.post('http://backend.afeefa.dev:3002/events', event.serialize()).then(response => {
+    return Vue.http.post('/api/events', event.serialize()).then(response => {
       const event = new Event()
       event.deserialize(response.body)
       return event
@@ -13,7 +13,7 @@ export default class EventsResource {
   }
 
   static getEvent (uri) {
-    return Vue.http.get('http://backend.afeefa.dev:3002/events/' + uri).then(response => {
+    return Vue.http.get('/api/events/' + uri).then(response => {
       const event = new Event()
       event.deserialize(response.body)
       return event

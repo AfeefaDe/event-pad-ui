@@ -15,8 +15,8 @@
         <slot name="tab0"></slot>
 
         <div class="tabFooter">
-          <button class="button-primary button-block" @click="increaseProgress()">Fertig</button>
-          <router-link tag="button" to="/" class="button-block">Details ergänzen</router-link>
+          <router-link tag="button" :to="{name: 'show', params: {uri: event.uri}}" class="button-block button-primary">Fertig</router-link>
+          <button class="button-block" @click="increaseProgress()">Details ergänzen</button>
         </div>
     </div>
     <div class="progressTab" v-show="currentTabNumber == 1">
@@ -24,10 +24,8 @@
         <slot name="tab1"></slot>
 
         <div class="tabFooter">
-          <button class="inputStyle" @click="decreaseProgress()">Zurück</button>
-          <button class="button-primary" @click="saveEvent">Weiter</button>
+          <router-link tag="button" :to="{name: 'show', params: {uri: event.uri}}" class="button-block button-primary">Fertig</router-link>
         </div>
-        <router-link tag="button" :to="{name: 'show', params: {uri: event.uri}}" class="button-block button-primary">Treffen Ansehen</router-link>
     </div>
   </div>
 </template>

@@ -22,6 +22,9 @@
       <div slot="tab1">
         <label for="description">Beschreibung</label>
         <textarea class="inputStyle" id="description" v-model="description" rows="10" cols="20" placeholder="Agenda"></textarea>
+
+        <label for="description">Benötigt</label>
+        <input type="checkbox" value="">Bier
       </div>
     </tabbed-form>
   </div>

@@ -1,22 +1,22 @@
 <template>
   <div>
-    <div class="progressArea">
+    <!-- <div class="progressArea">
       <div class="progressHeader">
-        <!-- <span>{{tabNames[currentTabNumber]}}</span> -->
+        <span>{{tabNames[currentTabNumber]}}</span>
         <span class="progressNumber">{{currentTabNumber+1}}/{{currentTabCount+1}}</span>
       </div>
       <div class="progressBarContainer">
         <div v-bind:class="['progressBar', progressBarClass]"></div>
       </div>
-    </div>
+    </div> -->
 
     <div class="progressTab" v-show="currentTabNumber == 0">
 
         <slot name="tab0"></slot>
 
         <div class="tabFooter">
-          <router-link tag="button" to="/" class="inputStyle button">Abrechen</router-link>
-          <button class="inputStyle button-primary" @click="increaseProgress()">Weiter</button>
+          <button class="button-primary button-block" @click="increaseProgress()">Fertig</button>
+          <router-link tag="button" to="/" class="button-block">Details ergänzen</router-link>
         </div>
     </div>
     <div class="progressTab" v-show="currentTabNumber == 1">
@@ -25,15 +25,9 @@
 
         <div class="tabFooter">
           <button class="inputStyle" @click="decreaseProgress()">Zurück</button>
-          <button class="inputStyle button-primary" @click="saveEvent">Weiter</button>
+          <button class="button-primary" @click="saveEvent">Weiter</button>
         </div>
-    </div>
-    <div class="progressTab" v-show="currentTabNumber == 2">
-
-        <slot name="tab2"></slot>
-
         <router-link tag="button" :to="{name: 'show', params: {uri: event.uri}}" class="button-block button-primary">Treffen Ansehen</router-link>
-        <!-- <button class="button-block" @click="decreaseProgress()">Zurück</button> -->
     </div>
   </div>
 </template>
@@ -80,8 +74,8 @@ export default {
 @import "~variables";
 
 .tabFooter {
-  display: flex;
-  justify-content: space-between;
+  /*display: flex;*/
+  /*justify-content: space-between;*/
 }
 
 .progressArea {
@@ -113,7 +107,7 @@ export default {
     left: 0;
     height: 20px;
     width: 0;
-    background: $gray;
+    background: $black;
   }
   .third0 {
     width: 5%;

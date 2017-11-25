@@ -9,13 +9,30 @@ body {
   font-family: 'Inter UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
+  color: $black;
   line-height: 170%;
   font-size: 16px;
+  background-color: $white;
 }
 
 .content {
-  padding: 4vh 2vw 2vh 2vw;
+  padding: 4vh 8vw 4vh 8vw;
+}
+
+h1 {
+  font-size: 1.3rem;
+  display: inline-block;
+  margin: 0;
+  text-transform: uppercase;
+  border-bottom: .2em solid $black;
+}
+
+section {
+  padding: 1rem 2rem;
+
+  h2 {
+    @extend label;
+  }
 }
 
 a {

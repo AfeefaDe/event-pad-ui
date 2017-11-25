@@ -29,6 +29,7 @@ export default {
     },
     sendMail: function () {
       alert('Einladung per Mail versenden')
+      window.open('mailto:felix@afeefa.de')
     }
   }
 }

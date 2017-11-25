@@ -4,10 +4,13 @@
       <h2 class="bunnerHeading">TREFFEN</h2>
   </div>
   <div class="content">
-    <p class="landingHint"><strong>Mit TREFFEN von Afeefa organisierst du Treffen effizienter.</strong><br><br>Terminabstimmung, Ort, Anmeldelisten, Materialien und kurzfristige Benachrichtigungen. Hier kommen alle Informationen zusammen und alle Leute sind immer und überall im Bild. Ohne Anmeldung und kostenlos kannst du ein Treffen erstellen und den Link mit deinen potenziellen Teilnehmern teilen.</p>
-    <router-link tag="button" class="button-primary button-block" to="new">Treffen anzetteln</router-link>
+    <p class="title"><strong>Mit TREFFEN von Afeefa<br>organisierst du Treffen effizienter</strong></p>
+
+    <p class="subtitle">Alle mit den wichtigsten Infos versorgen und wissen, wer kommt. Ohne Anmeldung,  kostenlos und nach Belieben anonym.</p>
+
+    <router-link tag="button" class="button-primary button-block" to="new">Treffen</router-link>
     <div class="footer">
-      Ein Projekt von <a href="https://afeefa.de/">Afeefa.de</a>, 2017
+      Ein Projekt von <a href="https://facebook.com/afeefa.de/" target="_blank">Afeefa</a>
     </div>
   </div>
 </div>
@@ -46,22 +49,30 @@ export default {
 }
 .bunnerHeading {
   position: absolute;
-  bottom: 0%;
+  bottom: 0;
+  margin: 0;
   width: 100%;
   text-align: center;
-  color: white;
-  font-size: 7vh;
+  color: $white;
+  font-size: 20vw;
+  line-height: 14vw;
   font-weight: 800;
 }
-.landingHint {
+.title, .subtitle {
   width: 90%;
   max-width: 600px;
   margin: 0 auto;
-  color: $gray;
   text-align: center;
+  /*color: $gray;*/
 }
+  .title {
+    margin-bottom: 1em;
+    font-size: 1.2rem;
+  }
+  .subtitle {
+  }
 .footer {
-  text-align: right;
+  text-align: center;
   font-size: 0.8rem;
   font-weight: 600;
 }

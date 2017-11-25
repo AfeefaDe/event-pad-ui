@@ -15,7 +15,7 @@
       </div>
     </div>
 
-    <div class="info-block description">
+    <section class="description">
       <h2>Details</h2>
       <pre>AGENDA:
 - Kategorienbaum beschließen
@@ -23,14 +23,14 @@
   - Redaktionsrhythmus
   - ÖA Event</pre>
     <p class="show-more">...</p>
-    </div>
+    </section>
 
-    <div class="info-block material">
+    <section class="material">
       <h2>Materialien</h2>
       ÖA-Kampagne-v2.pdf
-    </div>
+    </section>
 
-    <div class="info-block">
+    <section>
       <h2>Teilnehmer</h2>
       <div class="participants">
         <div class="list">
@@ -50,22 +50,22 @@
           </ul>
         </div>
       </div>
-    </div>
+    </section>
 
     <div class="participation-actions">
       <div class="flex">
-        <button class="button-green button-small-margin" @click="userAction()">Ich komme</button>
-        <button class="button-red button-small-margin" @click="userAction()">Ich komme nicht</button>
+        <button class="button-green button-small-margin" @click="userAction()">Komme!</button>
+        <!-- <button class="button-small-margin" @click="userAction()">Weiß nicht</button> -->
+        <button class="button-red button-small-margin" @click="userAction()">Komme nicht</button>
       </div>
-      <button class="button-block button-small-margin" @click="userAction()">Haltet mich auf dem Laufenden</button>
     </div>
 
-    <div class="info-block share">
+    <section class="share">
       <h2>Leute einladen</h2>
       <event-link-clipboard :event="event"></event-link-clipboard>
-    </div>
+    </section>
 
-    <div class="info-block discussion">
+    <section class="discussion">
       <h2>Diskussion</h2>
       <div class="message">
         <p class="author">Misha um 15:20</p>
@@ -85,7 +85,7 @@
         <p>Wir sind echt ein geiles Team! Sorry für die vielen Details.</p>
       </div>
       <textarea class="inputStyle" rows="3" placeholder="Nachricht schreiben" />
-    </div>
+    </section>
   </div>
 </template>
 
@@ -109,12 +109,12 @@ export default {
     })
   },
   mounted () {
-    var participants = 5
+    var participants = 30
 
     var pattern = Trianglify({
       width: this.$refs.header.offsetWidth,
       height: this.$refs.header.offsetHeight,
-      cell_size: 500 / participants,
+      cell_size: 2000 / participants,
       x_colors: 'GnBu',
       y_colors: 'GnBu'
     })
@@ -146,7 +146,7 @@ p {
 .header {
   width: 100%;
   height: auto;
-  background-color: black;
+  background-color: $black;
   position: relative;
 }
   .pattern {
@@ -171,18 +171,6 @@ p {
       border-bottom: 1px dashed white;
       cursor: pointer;
     }
-.info-block {
-  padding: 1rem 2rem;
-
-  h2 {
-    font-size: 1rem;
-    text-transform: uppercase;
-    text-align: center;
-    display: block;
-    color: $lightGray;
-    margin-top: 0;
-  }
-}
 
 .material {
   background: $creme;
@@ -208,7 +196,7 @@ p {
     padding-right: 1rem;
 
     &.not-coming {
-      text-align: right;
+      /*text-align: right;*/
     }
 
     .list-heading {
@@ -246,7 +234,6 @@ p {
   }
   .author {
     font-size: .8rem;
-    color: $gray;
   }
   textarea {
     background-color: white;

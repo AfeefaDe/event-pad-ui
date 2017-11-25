@@ -2,41 +2,27 @@
 <div>
   <div class="content">
     <div class="createHeader">
-      <h2>Neues Treffen anzetteln</h2>
+      <h1>Neues Treffen</h1>
     </div>
     <tabbed-form :event="event" @saveActionTriggered="createEvent">
       <div slot="tab0">
-        <label for="title">Titel des Treffens</label>
-        <input class="inputStyle" type="text" id="title" v-model="title" placeholder="Titel" autofocus>
+        <label for="title">Was</label>
+        <input class="inputStyle" type="text" id="title" v-model="title" placeholder="Titel eingeben..." autofocus>
 
-        <!-- <label for="host">Veranstalter</label> -->
-        <!-- <input class="inputStyle" type="text" id="host" v-model="host" placeholder="Veranstalter" autofocus> -->
-
-        <label for="place">Wo findet es statt?</label>
-        <input class="inputStyle" type="text" id="place" v-model="place" placeholder="Ort">
-
-        <label for="description">Was wird passieren?</label>
-        <textarea class="inputStyle" id="description" v-model="description" rows="10" cols="20" placeholder="Agenda"></textarea>
-
-        <label for="date_start">Wann geht's los?</label>
+        <label for="date_start">Wann</label>
         <input class="inputStyle" type="datetime-local" v-model="date_start" id="date_start" placeholder="Startdatum">
 
-        <label for="date_end">Wann ist Schluss?</label>
-        <input class="inputStyle" type="datetime-local" v-model="date_end" id="date_end" placeholder="Enddatum">
+        <label for="place">Wo</label>
+        <input class="inputStyle" type="text" id="place" v-model="place" placeholder="Ort">
+
+        <!-- <label for="date_end">Wann ist Schluss?</label> -->
+        <!-- <input class="inputStyle" type="datetime-local" v-model="date_end" id="date_end" placeholder="Enddatum"> -->
       </div>
 
       <div slot="tab1">
-        <label for="memberName">Wie lautet dein Name?</label>
-        <input class="inputStyle" type="text" id="memberName" v-model="memberName" placeholder="Dein Name" autofocus>
+        <label for="description">Beschreibung</label>
+        <textarea class="inputStyle" id="description" v-model="description" rows="10" cols="20" placeholder="Agenda"></textarea>
       </div>
-
-      <div slot="tab2">
-        <p>Fertig!</p>
-        <p>Jetzt gleich Einladungen verschicken:</p>
-        <event-link-clipboard :event="event">
-        </event-link-clipboard>
-      </div>
-
     </tabbed-form>
   </div>
 </div>
@@ -86,16 +72,9 @@ export default {
 <style lang="scss" scoped>
 @import "~variables";
 
-h1 {
-  color: $black;
-}
-
 .createHeader {
   margin-bottom: 1em;
-  h2 {
-    margin: 0;
-    text-align: center;
-  }
+  text-align: center;
 }
 
 

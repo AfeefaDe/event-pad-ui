@@ -1,9 +1,14 @@
-
 'use strict'
 // Template version: 1.1.3
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
+
+var apiproxy = {proxy: ''}
+try {
+  apiproxy = require('./apiproxy')
+} catch (error) {
+}
 
 module.exports = {
   build: {
@@ -33,7 +38,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://localhost:3004',
+        target: apiproxy.proxy || 'http://localhost:3004',
         pathRewrite: {
           '^/api': ''
         },

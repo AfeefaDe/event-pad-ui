@@ -22,4 +22,4 @@ app/styles/.sass-cache/*
 ember-serve.bat
 
 # project
-local.js
+config/apiproxy.js

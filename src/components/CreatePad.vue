@@ -4,16 +4,16 @@
     <div class="createHeader">
       <h1>Neues Treffen</h1>
     </div>
-    <tabbed-form :event="event" @saveActionTriggered="createEvent">
+    <tabbed-form :event="null" @saveActionTriggered="createEvent">
       <div slot="tab0">
         <label for="title">Was</label>
-        <input class="inputStyle" type="text" id="title" v-model="title" placeholder="Titel eingeben..." autofocus>
+        <input class="inputStyle" type="text" id="title" v-model="newEvent.title" placeholder="Titel eingeben..." autofocus>
 
         <label for="date_start">Wann</label>
-        <input class="inputStyle" type="datetime-local" v-model="date_start" id="date_start" placeholder="Startdatum">
+        <input class="inputStyle" type="datetime-local" v-model="newEvent.date_start" id="date_start" placeholder="Startdatum">
 
         <label for="place">Wo</label>
-        <input class="inputStyle" type="text" id="place" v-model="place" placeholder="Ort">
+        <input class="inputStyle" type="text" id="place" v-model="newEvent.location" placeholder="Ort">
 
         <!-- <label for="date_end">Wann ist Schluss?</label> -->
         <!-- <input class="inputStyle" type="datetime-local" v-model="date_end" id="date_end" placeholder="Enddatum"> -->
@@ -21,7 +21,7 @@
 
       <div slot="tab1">
         <label for="description">Beschreibung</label>
-        <textarea class="inputStyle" id="description" v-model="description" rows="10" cols="20" placeholder="Agenda"></textarea>
+        <textarea class="inputStyle" id="description" v-model="newEvent.description" rows="10" cols="20" placeholder="Agenda"></textarea>
 
         <label for="description">Benötigt</label>
         <input type="checkbox" value="">Bier
@@ -43,29 +43,17 @@ export default {
   components: { TabbedForm, EventLinkClipboard },
   data () {
     return {
-      title: '',
-      host: '',
-      place: '',
-      description: '',
-      date_start: new Date(),
-      date_end: new Date(),
-      memberName: '',
-
-      event: new Event()
+      newEvent: null
     }
+  },
+  created () {
+    this.newEvent = new Event()
   },
   methods: {
     createEvent () {
-      let newEvent = new Event()
-      newEvent.title = this.title
-      newEvent.host = this.host
-      newEvent.location = this.place
-      newEvent.description = this.description
-      newEvent.date_start = this.date_start
-      newEvent.date_end = this.date_end
-      newEvent.initiator_name = this.memberName
-      Events.createEvent(newEvent).then(event => {
-        this.event = event
+      console.log('Create Event: ', this.newEvent)
+      Events.createEvent(this.newEvent).then(event => {
+        console.log(event)
       })
     }
   }

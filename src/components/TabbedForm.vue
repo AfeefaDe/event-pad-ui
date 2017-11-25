@@ -1,31 +1,24 @@
 <template>
   <div>
-    <!-- <div class="progressArea">
-      <div class="progressHeader">
-        <span>{{tabNames[currentTabNumber]}}</span>
-        <span class="progressNumber">{{currentTabNumber+1}}/{{currentTabCount+1}}</span>
-      </div>
-      <div class="progressBarContainer">
-        <div v-bind:class="['progressBar', progressBarClass]"></div>
-      </div>
-    </div> -->
-
     <div class="progressTab" v-show="currentTabNumber == 0">
 
         <slot name="tab0"></slot>
 
         <div class="tabFooter">
-          <router-link tag="button" :to="{name: 'show', params: {uri: event.uri}}" class="button-block button-primary">Fertig</router-link>
-          <button class="button-block" @click="increaseProgress()">Details ergänzen</button>
+          <button class="button-block button-primary" @click="saveEvent">Fertig</button>
+<!--           <router-link tag="button" :to="{name: 'show', params: {uri: event.uri}}" class="">Fertig</router-link>
+ -->          <button class="button-block" @click="increaseProgress()">Details ergänzen</button>
         </div>
+
     </div>
     <div class="progressTab" v-show="currentTabNumber == 1">
 
         <slot name="tab1"></slot>
 
         <div class="tabFooter">
-          <router-link tag="button" :to="{name: 'show', params: {uri: event.uri}}" class="button-block button-primary">Fertig</router-link>
+<!--           <router-link tag="button" :to="{name: 'show', params: {uri: event.uri}}" class="button-block button-primary">Fertig</router-link> -->
         </div>
+
     </div>
   </div>
 </template>

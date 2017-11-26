@@ -4,13 +4,17 @@
     <div class="createHeader">
       <h1>Neues Treffen</h1>
     </div>
-    <tabbed-form :event="null" @saveActionTriggered="createEvent">
+    <tabbed-form :event="null" @saveActionTriggered="createEvent" :hasValidationError="hasValidationError">
       <div slot="tab0">
         <label for="title">Was</label>
-        <input type="text" id="title" v-model="newEvent.title" placeholder="Titel eingeben..." autofocus>
+        <input type="text" id="title" v-model="newEvent.title" placeholder="Titel eingeben..." autofocus
+          @blur="checkTitleEmpty()" @input="checkTitleEmpty()">
+        <span class="error-message" v-if="titleError">Bitte gib einen Titel ein.</span>
 
         <label for="dateStart">Wann</label>
-        <input type="datetime-local" v-model="dateStart" id="dateStart" placeholder="Startdatum">
+        <input type="datetime-local" v-model="dateStart" id="dateStart" placeholder="Startdatum"
+          @blur="checkDateEmpty()" @input="checkDateEmpty()">
+        <span class="error-message" v-if="dateError">Bitte gib eine Zeit an.</span>
 
         <label for="place">Wo</label>
         <input type="text" id="place" v-model="newEvent.location" placeholder="Ort">
@@ -44,7 +48,14 @@ export default {
   data () {
     return {
       newEvent: null,
-      dateStart: null
+      dateStart: null,
+      titleError: false,
+      dateError: false
+    }
+  },
+  computed: {
+    hasValidationError () {
+      return !this.newEvent.title || !this.dateStart
     }
   },
   created () {
@@ -52,6 +63,12 @@ export default {
     this.dateStart = this.newEvent.dateStart.toJSON().slice(0, 19)
   },
   methods: {
+    checkTitleEmpty () {
+      this.titleError = !this.newEvent.title
+    },
+    checkDateEmpty () {
+      this.dateError = !this.dateStart
+    },
     createEvent () {
       this.newEvent.dateStart = new Date(this.dateStart)
       Events.createEvent(this.newEvent).then(event => {
@@ -71,6 +88,12 @@ export default {
   text-align: center;
 }
 
-
+.error-message {
+  font-size: .9em;
+  color: #ee3333;
+  display: block;
+  margin-top: -1.8em;
+  margin-bottom: 1.5em;
+}
 
 </style>

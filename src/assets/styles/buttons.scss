@@ -69,6 +69,16 @@
   }
 }
 
+.button-disabled {
+  background: $creme;
+  cursor: default;
+  color: $lightGray;
+  &:hover {
+    background: $creme;
+    box-shadow: none;
+  }
+}
+
 button {
 	@extend .button;
 	/*may include specific styles to override classic button behaviour*/

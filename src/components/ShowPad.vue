@@ -4,22 +4,17 @@
     <div ref="header" class="header">
       <div ref="pattern" class="pattern"></div>
       <div class="header-content">
-        <h1>Redaktionssitzung</h1>
+        <h1>{{event.title}}</h1>
         <p>Do 7.12.2017 um 18:00</p>
         <p>
-          <span class="location" @click="openLocationInGMaps()">Impact Hub Dresden</span>
+          <span class="location" @click="openLocationInGMaps()">{{event.location}}</span>
         </p>
       </div>
     </div>
 
     <section class="description">
       <h2>Beschreibung</h2>
-      <pre>AGENDA:
-- Kategorienbaum beschließen
-- Orga
-  - Redaktionsrhythmus
-  - ÖA Event</pre>
-    <p class="show-more">...</p>
+      <pre>{{event.description}}</pre>
     </section>
 
     <section>
@@ -78,13 +73,29 @@ export default {
   components: {EventLinkClipboard},
   data () {
     return {
-      event: new Event()
+      event: null
     }
   },
   created: function () {
-    Events.getEvent(this.$route.params.uri).then(event => {
-      this.event = event
-    })
+    // coming from create and event is passed over
+    if (this.$route.params.event) {
+      this.event = this.$route.params.event
+    }
+
+    // coming from nowhere and event needs to be fetched by its uri
+    if (!this.event) {
+      Events.getEvent(this.$route.params.uri).then(event => {
+        if (event) this.event = new Event(event)
+      })
+    }
+
+    // if still nothing found, show NOT FOUND INFO
+    if (!this.event) {
+      alert('event nicht gefunden')
+      this.$router.push({ name: 'main' })
+    }
+
+    console.debug(this.event)
   },
   mounted () {
     var participants = 30
@@ -155,11 +166,6 @@ p {
 }
   pre {
     margin: 0;
-  }
-  .show-more {
-    font-size: 2rem;
-    color: $black;
-    text-align: center;
   }
 .participants {
   display: flex;

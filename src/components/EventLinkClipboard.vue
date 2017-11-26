@@ -1,9 +1,9 @@
 <template>
   <div class="EventLinkClipboard">
-    <input ref="linkField" :value="fullLink"/><br>
-    <button class="" @click="copyToClipboard()"><i class="material-icons">content_copy</i></button>
-    <a class="button" href="mailto:?body=thelink&subject=Einladung zum ..."><i class="material-icons">mail</i></a>
-    <span v-if="message">{{message}}</span>
+    <input ref="linkField" :value="fullLink"/>
+    <button class="button-small-margin" @click="copyToClipboard()"><i class="material-icons">content_copy</i></button>
+    <a class="button button-small-margin" :href="mailContent"><i class="material-icons">mail</i></a>
+    <span style="display: block" v-if="message">{{message}}</span>
   </div>
 </template>
 
@@ -19,6 +19,9 @@ export default {
   computed: {
     fullLink () {
       return 'events.afeefa.de/treffen/' + this.event.uri
+    },
+    mailContent () {
+      return 'mailto:?body=' + this.event.uri + '&subject=Einladung: ' + this.event.title
     }
   },
   methods: {

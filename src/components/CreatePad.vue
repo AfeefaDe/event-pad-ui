@@ -7,13 +7,13 @@
     <tabbed-form :event="null" @saveActionTriggered="createEvent">
       <div slot="tab0">
         <label for="title">Was</label>
-        <input class="inputStyle" type="text" id="title" v-model="newEvent.title" placeholder="Titel eingeben..." autofocus>
+        <input type="text" id="title" v-model="newEvent.title" placeholder="Titel eingeben..." autofocus>
 
         <label for="date_start">Wann</label>
-        <input class="inputStyle" type="datetime-local" v-model="newEvent.date_start" id="date_start" placeholder="Startdatum">
+        <input type="datetime-local" v-model="newEvent.date_start" id="date_start" placeholder="Startdatum">
 
         <label for="place">Wo</label>
-        <input class="inputStyle" type="text" id="place" v-model="newEvent.location" placeholder="Ort">
+        <input type="text" id="place" v-model="newEvent.location" placeholder="Ort">
 
         <!-- <label for="date_end">Wann ist Schluss?</label> -->
         <!-- <input class="inputStyle" type="datetime-local" v-model="date_end" id="date_end" placeholder="Enddatum"> -->
@@ -53,7 +53,11 @@ export default {
     createEvent () {
       console.log('Create Event: ', this.newEvent)
       Events.createEvent(this.newEvent).then(event => {
-        console.log(event)
+        console.log('event created: ' + event)
+
+        if (!event.uri) event.uri = 'uri-not-available'
+        console.debug('route to new event URI: ' + event.uri)
+        this.$router.push({ name: 'show', params: {uri: event.uri, event: event} })
       })
     }
   }

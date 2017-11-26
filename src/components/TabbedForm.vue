@@ -16,7 +16,7 @@
         <slot name="tab1"></slot>
 
         <div class="tabFooter">
-<!--           <router-link tag="button" :to="{name: 'show', params: {uri: event.uri}}" class="button-block button-primary">Fertig</router-link> -->
+          <button class="button-block button-primary" @click="saveEvent">Fertig</button>
         </div>
 
     </div>
@@ -55,7 +55,7 @@ export default {
     },
     saveEvent: function () {
       this.$emit('saveActionTriggered')
-      this.increaseProgress()
+      // this.increaseProgress()
     }
   }
 }

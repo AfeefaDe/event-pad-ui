@@ -1,11 +1,11 @@
 <template>
   <div>
-    
+
     <div ref="header" class="header">
       <div ref="pattern" class="pattern"></div>
       <div class="header-content">
-        <h1>{{event.title}}</h1>
-        <p>{{event.date_start}}</p>
+        <h1>{{ event.title }}</h1>
+        <p>{{ event.dateStart.toLocaleDateString() }} {{ event.dateStart.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) }}</p>
         <p>
           <span class="location" @click="openLocationInGMaps()">{{event.location}}</span>
         </p>
@@ -199,7 +199,7 @@ p {
 .participants {
   display: flex;
   margin-bottom: 1rem;
-  
+
   button {
     width: 11em;
   }
@@ -242,13 +242,13 @@ p {
     /*color: lighten($black, 40);*/
     text-align: center;
     text-decoration: none;
-    
+
     cursor: pointer;
 
     &:hover {
       text-decoration: underline;
     }
-    i { 
+    i {
       font-size: 2.5rem;
       color: $black;
       padding-bottom: .2em;
@@ -264,7 +264,7 @@ p {
     margin-bottom: 1rem;
     padding: .5rem;
     line-height: 1.2rem;
-      
+
     &.event-start {
       background-color: inherit;
       font-style: italic;
@@ -278,7 +278,7 @@ p {
   .user-message-input {
     display: flex;
     align-items: flex-end;
-    
+
     textarea {
       background-color: $white;
       height: 3rem;

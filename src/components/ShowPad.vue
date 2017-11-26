@@ -74,7 +74,7 @@
     </section>
 
     <section class="misc-actions">
-      <span><i class="material-icons">mail_outline</i></span>
+      <a :href="mailContent"><i class="material-icons">mail_outline</i></a>
       <span><i class="material-icons">star_border</i></span>
       <a href="webcal://afeefa.de/events" target="_blank"><i class="material-icons">event</i></a>
       <span><i class="material-icons">vibration</i></span>
@@ -95,6 +95,11 @@ export default {
   data () {
     return {
       event: null
+    }
+  },
+  computed: {
+    mailContent () {
+      return 'mailto:?body=' + this.event.generateFullLink() + '&subject=Einladung: ' + this.event.title
     }
   },
   created: function () {

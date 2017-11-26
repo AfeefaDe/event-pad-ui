@@ -29,4 +29,7 @@ export default class Event {
     }
     return data
   }
+  generateFullLink () {
+    return document.location.origin + '/treffen/' + this.uri
+  }
 }

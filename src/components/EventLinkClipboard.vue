@@ -2,8 +2,6 @@
   <div class="EventLinkClipboard">
     <input ref="linkField" :value="fullLink"/>
     <button class="button-small button-small-margin" @click="copyToClipboard()"><i class="material-icons">content_copy</i></button>
-    <a class="button button-small button-small-margin" :href="mailContent"><i class="material-icons">mail</i></a>
-    <span style="display: block" v-if="message">{{message}}</span>
   </div>
 </template>
 
@@ -18,20 +16,13 @@ export default {
   props: ['event'],
   computed: {
     fullLink () {
-      return this.generateFullLink()
-    },
-    mailContent () {
-      return 'mailto:?body=' + this.generateFullLink() + '&subject=Einladung: ' + this.event.title
+      return this.event.generateFullLink()
     }
   },
   methods: {
     copyToClipboard: function () {
       this.$refs.linkField.select()
       document.execCommand('Copy')
-      this.message = 'Link kopiert ✓'
-    },
-    generateFullLink: function () {
-      return document.location.origin + '/treffen/' + this.event.uri
     }
   }
 }
@@ -41,12 +32,13 @@ export default {
 @import "~variables";
 
 .EventLinkClipboard {
-  text-align: center;
+  display: flex;
+  justify-content: flex-start;
 }
 
 input {
-  width: 100%;
-  /*display: inline;*/
+  height: 3rem;
+  box-sizing: border-box;
   padding: .5rem;
   margin: 0;
   text-align: center;
@@ -56,7 +48,9 @@ input {
 }
 
 button {
-  display: inline;
+  margin: 0 0 0 1rem;
+  height: 3rem;
+  /*display: inline;*/
 }
 
 </style>

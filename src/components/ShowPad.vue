@@ -65,7 +65,10 @@
         <p class="author">Jens um 23:35</p>
         <p>Wir sind echt ein geiles Team! Sorry für die vielen Details.</p>
       </div>
-      <textarea class="inputStyle" rows="3" placeholder="Nachricht schreiben" />
+      <div class="user-message-input">
+        <textarea rows="3" placeholder="Nachricht schreiben" />
+        <button class="button-small"><i class="material-icons">send</i></button>
+      </div>
     </section>
 
     <section>
@@ -75,7 +78,7 @@
 
     <section class="misc-actions">
       <a :href="mailContent"><i class="material-icons">mail_outline</i><br>Per Mail senden</a>
-      <span><i class="material-icons">star_border</i><br>Lesezeichen speichern</span>
+      <span><i class="material-icons">bookmark_border</i><br>Lesezeichen speichern</span>
       <a href="webcal://afeefa.de/events" target="_blank"><i class="material-icons">event</i><br>In Kalender speichern</a>
     </section>
 
@@ -272,7 +275,22 @@ p {
     color: lighten($black, 40);
     font-size: .8rem;
   }
-  textarea {
-    background-color: $white;
+  .user-message-input {
+    display: flex;
+    align-items: flex-end;
+    
+    textarea {
+      background-color: $white;
+      height: 3rem;
+      margin: 0;
+      padding: .5em;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: $white;
+      margin: 0 0 0 .5em;
+      height: 3rem;
+    }
   }
 </style>

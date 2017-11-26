@@ -5,9 +5,8 @@
         <slot name="tab0"></slot>
 
         <div class="tabFooter">
+          <button :class="['button-block', {'button-disabled': hasValidationError}]" @click="increaseProgress()" :disabled="hasValidationError">Details ergänzen</button>
           <button :class="['button-block', 'button-primary', {'button-disabled': hasValidationError}]" @click="saveEvent" :disabled="hasValidationError">Fertig</button>
-<!--           <router-link tag="button" :to="{name: 'show', params: {uri: event.uri}}" class="">Fertig</router-link>
- -->          <button :class="['button-block', {'button-disabled': hasValidationError}]" @click="increaseProgress()" :disabled="hasValidationError">Details ergänzen</button>
         </div>
 
     </div>
@@ -69,8 +68,8 @@ export default {
 @import "~variables";
 
 .tabFooter {
-  /*display: flex;*/
-  /*justify-content: space-between;*/
+  display: flex;
+  justify-content: space-between;
 }
 
 .progressArea {

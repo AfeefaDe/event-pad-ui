@@ -8,7 +8,7 @@
 
     <p class="subtitle">Alle mit den wichtigsten Infos versorgen und wissen, wer kommt. Ohne Anmeldung,  kostenlos und nach Belieben anonym.</p>
 
-    <router-link tag="button" class="button-primary button-block" to="new">Treffen</router-link>
+    <router-link tag="button" class="button-primary button-block button-center" to="new">Treffen</router-link>
 
     <div class="footer">
       <p>Ein Projekt von <a href="https://facebook.com/afeefa.de/" target="_blank">Afeefa</a></p>

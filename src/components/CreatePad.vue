@@ -55,7 +55,7 @@ export default {
   },
   computed: {
     hasValidationError () {
-      return !this.newEvent.title || !this.dateStart
+      return !this.newEvent.title.trim() || !this.dateStart
     }
   },
   created () {
@@ -64,7 +64,7 @@ export default {
   },
   methods: {
     checkTitleEmpty () {
-      this.titleError = !this.newEvent.title
+      this.titleError = !this.newEvent.title.trim()
     },
     checkDateEmpty () {
       this.dateError = !this.dateStart

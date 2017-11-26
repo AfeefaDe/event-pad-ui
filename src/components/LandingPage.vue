@@ -9,8 +9,9 @@
     <p class="subtitle">Alle mit den wichtigsten Infos versorgen und wissen, wer kommt. Ohne Anmeldung,  kostenlos und nach Belieben anonym.</p>
 
     <router-link tag="button" class="button-primary button-block" to="new">Treffen</router-link>
+    
     <div class="footer">
-      Ein Projekt von <a href="https://facebook.com/afeefa.de/" target="_blank">Afeefa</a>
+      <p>Ein Projekt von <a href="https://facebook.com/afeefa.de/" target="_blank">Afeefa</a></p>
       <a href="mailto:team@afeefa.de" style="display: block"><i class="material-icons">mail_outline</i></a>
     </div>
   </div>
@@ -76,5 +77,15 @@ export default {
   text-align: center;
   font-size: 0.8rem;
   font-weight: 600;
+
+  & > p {
+    display: inline-block;
+    border-top: 1px dotted $lightGray;
+    font-size: 1rem;
+    line-height: 3rem;
+  }
+  .material-icons {
+    font-size: 2rem;
+  }
 }
 </style>

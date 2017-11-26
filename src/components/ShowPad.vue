@@ -198,6 +198,9 @@ p {
   display: flex;
   margin-bottom: 1rem;
   
+  button {
+    width: 11em;
+  }
   .list {
     width: 50%;
     padding-right: 1rem;

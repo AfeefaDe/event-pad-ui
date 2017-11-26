@@ -1,7 +1,7 @@
 <template>
 <div>
   <div class="topBunner">
-      <h2 class="bunnerHeading">TREFFEN</h2>
+      <h2 class="bunnerHeading">Treffen</h2>
   </div>
   <div class="content">
     <p class="title"><strong>Mit TREFFEN von Afeefa<br>organisierst du Treffen effizienter</strong></p>
@@ -9,7 +9,7 @@
     <p class="subtitle">Alle mit den wichtigsten Infos versorgen und wissen, wer kommt. Ohne Anmeldung,  kostenlos und nach Belieben anonym.</p>
 
     <router-link tag="button" class="button-primary button-block" to="new">Treffen</router-link>
-    
+
     <div class="footer">
       <p>Ein Projekt von <a href="https://facebook.com/afeefa.de/" target="_blank">Afeefa</a></p>
       <a href="mailto:team@afeefa.de" style="display: block"><i class="material-icons">mail_outline</i></a>
@@ -55,6 +55,7 @@ export default {
   margin: 0;
   width: 100%;
   text-align: center;
+  text-transform: uppercase;
   color: $white;
   font-size: 20vw;
   line-height: 14vw;

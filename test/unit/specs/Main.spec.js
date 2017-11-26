@@ -1,11 +1,11 @@
 import Vue from 'vue'
-import MainView from '@/components/MainView'
+import LandingPage from '@/components/LandingPage'
 
-describe('MainView.vue', () => {
+describe('LandingPage.vue', () => {
   it('should render correct contents', () => {
-    const Constructor = Vue.extend(MainView)
+    const Constructor = Vue.extend(LandingPage)
     const vm = new Constructor().$mount()
-    expect(vm.$el.querySelector('h1').textContent)
-      .to.equal('Afeefa Events')
+    expect(vm.$el.querySelector('h2').textContent)
+      .to.equal('Treffen')
   })
 })

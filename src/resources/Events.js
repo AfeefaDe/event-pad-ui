@@ -19,6 +19,7 @@ export default class EventsResource {
       return event
     }).catch(response => {
       console.log('get hat nicht geklappt', response)
+      return false
     })
   }
 }

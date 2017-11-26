@@ -99,6 +99,20 @@ export default {
       event: null
     }
   },
+  created () {
+    if (this.$route.params.event) {
+      this.event = this.$route.params.event
+    } else {
+      Events.getEvent(this.$route.params.uri).then((loadedEvent) => {
+        if (loadedEvent) {
+          this.event = loadedEvent
+        } else {
+          // @todo: trigger alert on main page
+          this.$router.replace('/')
+        }
+      })
+    }
+  },
   mounted () {
     /* should be rerendered by watching event.participants.length
     var participants = 30
@@ -118,22 +132,9 @@ export default {
       return 'mailto:?body=' + this.event.generateFullLink() + '&subject=Einladung: ' + this.event.title
     }
   },
-  beforeRouteEnter (to, from, next) {
-    if (to.params.event) {
-      next(vm => vm.setEvent(to.params.event))
-    } else {
-      Events.getEvent(to.params.uri).then((loadedEvent) => {
-        if (loadedEvent) {
-          next(vm => vm.setEvent(loadedEvent))
-        } else {
-          // @todo: trigger alert on main page
-          next('/')
-        }
-      })
-    }
-  },
   methods: {
     setEvent: function (event) {
+      console.log('SET EVENT')
       this.event = event
     },
     openLocationInGMaps: function () {

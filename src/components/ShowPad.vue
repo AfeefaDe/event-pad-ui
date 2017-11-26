@@ -5,7 +5,7 @@
       <div ref="pattern" class="pattern"></div>
       <div class="header-content">
         <h1>{{event.title}}</h1>
-        <p>Do 7.12.2017 um 18:00</p>
+        <p>{{event.date_start}}</p>
         <p>
           <span class="location" @click="openLocationInGMaps()">{{event.location}}</span>
         </p>
@@ -18,10 +18,9 @@
     </section>
 
     <section>
-      <h2>Teilnehmer</h2>
       <div class="participants">
         <div class="list">
-          <span class="list-heading">Kommt:</span>
+        <button class="button-green button-small button-small-margin" @click="userAction()">Komme</button>
           <ul>
             <li>Anna</li>
             <li>Felix</li>
@@ -30,7 +29,7 @@
           </ul>
         </div>
         <div class="list not-coming">
-          <span class="list-heading">Kommt nicht:</span>
+        <button class="button-red button-small button-small-margin" @click="userAction()">Komme nicht</button>
           <ul>
             <li>Misha</li>
             <li>Ahmad</li>
@@ -39,12 +38,6 @@
       </div>
     </section>
 
-    <div class="participation-actions">
-      <div class="flex">
-        <button class="button-green button-small-margin" @click="userAction()">Komme!</button>
-        <button class="button-red button-small-margin" @click="userAction()">Komme nicht</button>
-      </div>
-    </div>
 
     <section>
       <h2>Leute einladen</h2>
@@ -57,6 +50,12 @@
         <li>Bier</li>
         <li>Essen</li>
       </ul>
+    </section>
+
+    <section class="misc-actions">
+      <span><i class="material-icons">star_border</i></span>
+      <span><i class="material-icons">event</i></span>
+      <span><i class="material-icons">vibration</i></span>
     </section>
 
   </div>
@@ -166,6 +165,7 @@ p {
 }
   pre {
     margin: 0;
+    white-space: pre-wrap;
   }
 .participants {
   display: flex;
@@ -179,9 +179,6 @@ p {
       /*text-align: right;*/
     }
 
-    .list-heading {
-      font-style: italic;
-    }
   }
   ul {
     list-style-type: none;
@@ -196,11 +193,15 @@ p {
   }
 }
 
-.participation-actions {
-  position: relative;
+.misc-actions {
+  display: flex;
+  justify-content: space-evenly;
 
-  .flex {
-    display: flex;
+  span {
+    display: block;
+    margin: 0 1em;
+
+    i { font-size: 3rem; }
   }
 }
 </style>

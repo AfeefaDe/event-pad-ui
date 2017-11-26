@@ -16,7 +16,7 @@
         <input type="text" id="place" v-model="newEvent.location" placeholder="Ort">
 
         <!-- <label for="date_end">Wann ist Schluss?</label> -->
-        <!-- <input class="inputStyle" type="datetime-local" v-model="date_end" id="date_end" placeholder="Enddatum"> -->
+        <!-- <input type="datetime-local" v-model="date_end" id="date_end" placeholder="Enddatum"> -->
       </div>
 
       <div slot="tab1">

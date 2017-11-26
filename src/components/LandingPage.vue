@@ -11,6 +11,7 @@
     <router-link tag="button" class="button-primary button-block" to="new">Treffen</router-link>
     <div class="footer">
       Ein Projekt von <a href="https://facebook.com/afeefa.de/" target="_blank">Afeefa</a>
+      <a href="mailto:team@afeefa.de" style="display: block"><i class="material-icons">mail_outline</i></a>
     </div>
   </div>
 </div>

@@ -1,0 +1,9 @@
+@mixin label() {
+  display: block;
+  font-size: 1rem;
+  text-transform: uppercase;
+  text-align: left;
+  display: block;
+  color: $lightGray;
+  margin-top: 0;
+}

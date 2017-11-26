@@ -1,5 +1,6 @@
 @import url('https://rsms.me/inter/inter-ui.css');
 @import 'variables';
+@import 'mixins';
 @import 'buttons';
 @import 'forms';
 
@@ -31,7 +32,7 @@ section {
   padding: 1rem 2rem;
 
   h2 {
-    @extend label;
+    @include label;
   }
 }
 

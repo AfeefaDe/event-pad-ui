@@ -18,6 +18,7 @@
         <div class="tabFooter">
           <button class="button-block button-primary" @click="saveEvent">Fertig</button>
         </div>
+        <button class="button-block" @click="decreaseProgress()">Zurück</button>
 
     </div>
   </div>

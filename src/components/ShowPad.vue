@@ -74,10 +74,9 @@
     </section>
 
     <section class="misc-actions">
-      <a :href="mailContent"><i class="material-icons">mail_outline</i></a>
-      <span><i class="material-icons">star_border</i></span>
-      <a href="webcal://afeefa.de/events" target="_blank"><i class="material-icons">event</i></a>
-      <span><i class="material-icons">vibration</i></span>
+      <a :href="mailContent"><i class="material-icons">mail_outline</i><br>Per Mail senden</a>
+      <span><i class="material-icons">star_border</i><br>Lesezeichen speichern</span>
+      <a href="webcal://afeefa.de/events" target="_blank"><i class="material-icons">event</i><br>In Kalender speichern</a>
     </section>
 
   </div>
@@ -235,7 +234,22 @@ p {
     display: block;
     margin: 0 1em;
 
-    i { font-size: 2.5rem; }
+    font-size: .8rem;
+    line-height: 1rem;
+    /*color: lighten($black, 40);*/
+    text-align: center;
+    text-decoration: none;
+    
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+    i { 
+      font-size: 2.5rem;
+      color: $black;
+      padding-bottom: .2em;
+    }
   }
 }
 

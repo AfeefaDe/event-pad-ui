@@ -1,9 +1,15 @@
 @mixin label() {
   display: block;
   font-size: 1rem;
-  text-transform: uppercase;
   text-align: left;
   display: block;
-  color: $lightGray;
-  margin-top: 0;
+  color: $blue;
+  margin-top: 2em;
+}
+
+@mixin placeholder {
+  ::-webkit-input-placeholder {@content}
+  :-moz-placeholder           {@content}
+  ::-moz-placeholder          {@content}
+  :-ms-input-placeholder      {@content}
 }

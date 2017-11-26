@@ -19,31 +19,33 @@
     </section>
 
     <section>
+      <div>
+        Name: <input v-model="participant.name">
+      </div>
       <div class="participants">
         <div class="list">
-        <button class="button-green button-small button-small-margin" @click="userAction()">Komme</button>
+        <button class="button-green button-small button-small-margin" @click="attend()">Komme</button>
           <ul>
-            <li>Anna</li>
-            <li>Felix</li>
-            <li>Friedrich</li>
-            <li>Jens</li>
+            <li v-for="attendent in attenders" :key="attendent.id" :class="{me: attendent.id === participant.id}">
+              {{ attendent.name }}
+            </li>
           </ul>
         </div>
         <div class="list not-coming">
-        <button class="button-red button-small button-small-margin" @click="userAction()">Komme nicht</button>
+        <button class="button-red button-small button-small-margin" @click="miss()">Komme nicht</button>
           <ul>
-            <li>Misha</li>
-            <li>Ahmad</li>
+            <li v-for="misser in missers" :key="misser.id" :class="{me: misser.id === participant.id}">
+              {{ misser.name }}
+            </li>
           </ul>
         </div>
       </div>
     </section>
 
-    <section class="todos">
+    <section class="todos" v-if="tasks.length">
       <h2>Benötigt</h2>
       <ul>
-        <li>Bier</li>
-        <li>Essen</li>
+        <li v-for="task in tasks">{{ task.name }}</li>
       </ul>
     </section>
 
@@ -90,49 +92,65 @@
 // import Trianglify from 'trianglify'
 import EventLinkClipboard from '@/components/EventLinkClipboard'
 import Events from '@/resources/Events'
+import Participant from '@/models/Participant'
 
 export default {
   name: 'ShowPad',
   components: {EventLinkClipboard},
   data () {
     return {
-      event: null
+      event: null,
+      participant: null,
+      participants: [],
+      tasks: []
     }
   },
   created () {
-    if (this.$route.params.event) {
-      this.event = this.$route.params.event
-    } else {
-      Events.getEvent(this.$route.params.uri).then((loadedEvent) => {
-        if (loadedEvent) {
-          this.event = loadedEvent
-        } else {
-          // @todo: trigger alert on main page
-          this.$router.replace('/')
-        }
-      })
-    }
-  },
-  mounted () {
-    /* should be rerendered by watching event.participants.length
-    var participants = 30
-
-    var pattern = Trianglify({
-      width: this.$refs.header.offsetWidth,
-      height: this.$refs.header.offsetHeight,
-      cell_size: 2000 / participants,
-      x_colors: 'GnBu',
-      y_colors: 'GnBu'
+    Events.getEvent(this.$route.params.uri).then((loadedEvent) => {
+      if (loadedEvent) {
+        this.event = loadedEvent
+        this.fetchParticipants()
+        this.fetchTasks()
+      } else {
+        // @todo: trigger alert on main page
+        this.$router.replace('/')
+      }
     })
-    this.$refs.pattern.appendChild(pattern.svg())
-    this.$el.querySelector('svg').setAttribute('opacity', 0.5) */
+
+    this.participant = new Participant()
+    this.participant.name = localStorage.getItem('participant.name') || ''
   },
   computed: {
     mailContent () {
       return 'mailto:?body=' + this.event.generateFullLink() + '&subject=Einladung: ' + this.event.title
+    },
+    attenders () {
+      return this.participants.filter(p => p.rsvp === Participant.I_ATTEND)
+    },
+    missers () {
+      return this.participants.filter(p => p.rsvp === Participant.I_MISS)
     }
   },
   methods: {
+    fetchParticipants () {
+      Events.getParticipans(this.event).then(participants => {
+        this.participants = participants
+        // check if the user already participates
+        const storedParticipantId = localStorage.getItem('participant.id')
+        if (storedParticipantId) {
+          this.participants.forEach(participant => {
+            if (parseInt(storedParticipantId) === participant.id) {
+              this.participant = participant
+            }
+          })
+        }
+      })
+    },
+    fetchTasks () {
+      Events.getTasks(this.event).then(tasks => {
+        this.tasks = tasks
+      })
+    },
     setEvent: function (event) {
       console.log('SET EVENT')
       this.event = event
@@ -143,6 +161,39 @@ export default {
     userAction: function () {
       let userName = prompt('Gib deinen Namen einen, mit andere dich erkennen:')
       console.debug(userName)
+    },
+    attend: function () {
+      this.participant.rsvp = Participant.I_ATTEND
+      this.updateOrAdd()
+    },
+    miss: function () {
+      this.participant.rsvp = Participant.I_MISS
+      this.updateOrAdd()
+    },
+    storeName () {
+      localStorage.setItem('participant.name', this.participant.name)
+    },
+    storeParticipation () {
+      // const data = {
+      //   eventId: this.event.id,
+      //   participantId: this.participant.id
+      // }
+      localStorage.setItem('participant.name', this.participant.name)
+    },
+    updateOrAdd () {
+      if (this.participant.id) {
+        Events.updateParticipant(this.event, this.participant).then(participant => {
+          this.participant = participant
+          this.fetchParticipants()
+        })
+      } else {
+        Events.addParticipant(this.event, this.participant).then(participant => {
+          this.participant = participant
+          this.storeParticipation()
+          this.fetchParticipants()
+        })
+      }
+      this.storeName()
     }
   }
 }
@@ -163,37 +214,43 @@ h1 {
 p {
   margin: 0;
 }
+
 .header {
   width: 100%;
   height: auto;
   background-color: $black;
   position: relative;
 }
-  .pattern {
-    position: absolute;
-    top: 0;
-    z-index: 5;
-  }
-  .header-content {
-    width: 100%;
-    padding: 1rem;
-    text-align: center;
-    position: relative;
-    z-index: 10;
-    color: $white;
-  }
-    .location {
-      border-bottom: 1px dashed white;
-      cursor: pointer;
-    }
+
+.pattern {
+  position: absolute;
+  top: 0;
+  z-index: 5;
+}
+
+.header-content {
+  width: 100%;
+  padding: 1rem;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+  color: $white;
+}
+
+.location {
+  border-bottom: 1px dashed white;
+  cursor: pointer;
+}
 
 .description {
   /*background: $creme;*/
 }
-  pre {
-    margin: 0;
-    white-space: pre-wrap;
-  }
+
+pre {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
 .participants {
   display: flex;
   margin-bottom: 1rem;
@@ -201,6 +258,7 @@ p {
   button {
     width: 11em;
   }
+
   .list {
     width: 50%;
     padding-right: 1rem;
@@ -208,7 +266,6 @@ p {
     &.not-coming {
       /*text-align: right;*/
     }
-
   }
   ul {
     list-style-type: none;
@@ -220,6 +277,11 @@ p {
     background-color: $creme;
     margin-bottom: .3rem;
     padding: .2rem;
+    margin-left: .2rem;
+  }
+  li.me {
+    background-color: $blue;
+    color: $white;
   }
 }
 

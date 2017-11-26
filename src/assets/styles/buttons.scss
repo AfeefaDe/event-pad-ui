@@ -71,11 +71,11 @@
 }
 
 .button-disabled {
-  background: $creme;
+  background: $lightGray;
   cursor: default;
-  color: $lightGray;
+  color: $gray;
   &:hover {
-    background: $creme;
+    background: $lightGray;
     box-shadow: none;
   }
 }

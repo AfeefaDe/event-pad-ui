@@ -6,13 +6,13 @@ input, textarea {
   width: 100%;
   font-size: 1.2rem;
   font-family: inherit;
-  border: none;
-  border-bottom: 2px solid lighten($black, 60);
+  // border: none;
+  border: 1px solid $gray;
   background: none;
   /*letter-spacing: -0.2px;*/
   outline: 0;
-  margin: 0.5em 0 1.5em 0;
-  padding: 0 0 .4em;
+  margin: .2em 0 0 0;
+  padding: .6em;
   /*font-weight: 600;*/
   &:focus {
     border-color: $blue;
@@ -29,4 +29,9 @@ input[type=checkbox] {
 
 label {
   @include label();
+}
+
+@include placeholder {
+  color: $gray;
+  font-size: .7em;
 }

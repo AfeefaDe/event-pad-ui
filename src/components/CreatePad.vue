@@ -1,32 +1,40 @@
 <template>
 <div>
   <div class="content">
-    <div class="createHeader">
-      <h1>Neues Treffen</h1>
-    </div>
     <tabbed-form :event="null" @saveActionTriggered="createEvent" :hasValidationError="hasValidationError">
       <div slot="tab0">
-        <label for="title">Was</label>
-        <input type="text" id="title" v-model="newEvent.title" placeholder="Titel eingeben..." autofocus
+        <h1>Neues Treffen</h1>
+
+        <label for="title">Titel der Veranstaltung *</label>
+        <input type="text" id="title" v-model="newEvent.title" autofocus
           @blur="checkTitleEmpty()" @input="checkTitleEmpty()">
         <span class="error-message" v-if="titleError">Bitte gib einen Titel ein.</span>
 
-        <label for="dateStart">Wann</label>
-        <input type="datetime-local" v-model="dateStart" id="dateStart" placeholder="Startdatum"
+        <label for="dateStart">Datum *</label>
+        <input type="datetime-local" v-model="dateStart" id="dateStart"
           @blur="checkDateEmpty()" @input="checkDateEmpty()">
         <span class="error-message" v-if="dateError">Bitte gib eine Zeit an.</span>
 
-        <label for="place">Wo</label>
-        <input type="text" id="place" v-model="newEvent.location" placeholder="Ort">
+        <label for="place">Ort</label>
+        <input type="text" id="place" v-model="newEvent.location">
 
-        <!-- <label for="date_end">Wann ist Schluss?</label> -->
-        <!-- <input type="datetime-local" v-model="date_end" id="date_end" placeholder="Enddatum"> -->
+        <label for="description">Beschreibung</label>
+        <textarea class="inputStyle" id="description" v-model="newEvent.description"></textarea>
+
+        <label>Aufgaben zu verteilen</label>
+        <div class="task-input">
+          <input type="text" v-model="newTaskName" @keyup.enter="addTask">
+          <a href="" @click.prevent="addTask"><i class="material-icons">add_circle_outline</i></a>
+        </div>
+        <div class="task-list">
+          <div class="task-list__item" v-for="(task, index) in tasks">
+            <div>{{ index + 1 }}. {{ task.name }}</div>
+            <a href="" @click.prevent="removeTask(task)"><i class="material-icons">remove_circle_outline</i></a>
+          </div>
+        </div>
       </div>
 
       <div slot="tab1">
-        <label for="description">Beschreibung</label>
-        <textarea class="inputStyle" id="description" v-model="newEvent.description" rows="10" cols="20" placeholder="Agenda"></textarea>
-
         <label for="description">Benötigt</label>
         <input type="checkbox" value="">Bier
       </div>
@@ -40,7 +48,9 @@
 import TabbedForm from '@/components/TabbedForm'
 import EventLinkClipboard from '@/components/EventLinkClipboard'
 import Event from '@/models/Event'
+import Task from '@/models/Task'
 import Events from '@/resources/Events'
+import autosize from 'autosize'
 
 export default {
   name: 'CreatePad',
@@ -50,7 +60,9 @@ export default {
       newEvent: null,
       dateStart: null,
       titleError: false,
-      dateError: false
+      dateError: false,
+      newTaskName: '',
+      tasks: []
     }
   },
   computed: {
@@ -62,6 +74,10 @@ export default {
     this.newEvent = new Event()
     this.dateStart = this.newEvent.dateStart.toJSON().slice(0, 19)
   },
+  mounted () {
+    autosize(this.$el.querySelector('#description'))
+  },
+
   methods: {
     checkTitleEmpty () {
       this.titleError = !this.newEvent.title.trim()
@@ -71,9 +87,25 @@ export default {
     },
     createEvent () {
       this.newEvent.dateStart = new Date(this.dateStart)
+      this.newEvent.tasks = this.tasks
       Events.createEvent(this.newEvent).then(event => {
-        if (!event.uri) event.uri = 'uri-not-available'
-        this.$router.push({ name: 'show', params: {uri: event.uri, event: event} })
+        Events.addTasks(event, this.tasks).then(tasks => {
+          this.$router.push({ name: 'show', params: {uri: event.uri, event: event} })
+        })
+      })
+    },
+    addTask () {
+      if (!this.newTaskName.trim()) {
+        return
+      }
+      const task = new Task()
+      task.name = this.newTaskName
+      this.tasks.push(task)
+      this.newTaskName = ''
+    },
+    removeTask (task) {
+      this.tasks = this.tasks.filter(theTask => {
+        return theTask !== task
       })
     }
   }
@@ -83,17 +115,32 @@ export default {
 <style lang="scss" scoped>
 @import "~variables";
 
-.createHeader {
-  margin-bottom: 1em;
-  text-align: center;
+i {
+  color: $darkGray;
 }
 
 .error-message {
   font-size: .9em;
   color: #ee3333;
-  display: block;
-  margin-top: -1.8em;
-  margin-bottom: 1.5em;
+}
+
+.task-input, .task-list__item {
+  > * {
+    display: inline-block;
+  }
+  > *:first-child {
+    width: 60%;
+    margin-right: 10px;
+  }
+  > *:last-child {
+    font-size: 2rem;
+    vertical-align: middle;
+    width: 10%;
+  }
+}
+
+.task-list {
+  margin-top: 1em;
 }
 
 </style>

@@ -1,4 +1,4 @@
-@import url('https://rsms.me/inter/inter-ui.css');
+// @import url('https://rsms.me/inter/inter-ui.css');
 @import 'variables';
 @import 'mixins';
 @import 'buttons';
@@ -21,11 +21,8 @@ body {
 }
 
 h1 {
-  font-size: 1.3rem;
+  font-size: 2rem;
   display: inline-block;
-  margin: 0;
-  text-transform: uppercase;
-  border-bottom: .15em solid $black;
 }
 
 section {

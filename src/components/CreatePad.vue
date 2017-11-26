@@ -9,8 +9,8 @@
         <label for="title">Was</label>
         <input type="text" id="title" v-model="newEvent.title" placeholder="Titel eingeben..." autofocus>
 
-        <label for="date_start">Wann</label>
-        <input type="datetime-local" v-model="newEvent.date_start" id="date_start" placeholder="Startdatum">
+        <label for="dateStart">Wann</label>
+        <input type="datetime-local" v-model="newEvent.dateStart" id="dateStart" placeholder="Startdatum">
 
         <label for="place">Wo</label>
         <input type="text" id="place" v-model="newEvent.location" placeholder="Ort">

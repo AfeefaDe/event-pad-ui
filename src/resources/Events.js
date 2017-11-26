@@ -13,7 +13,7 @@ export default class EventsResource {
   }
 
   static getEvent (uri) {
-    return Vue.http.get('/api/events/' + uri).then(response => {
+    return Vue.http.get('/api/events?uri=' + uri).then(response => {
       const event = new Event()
       event.deserialize(response.body)
       return event

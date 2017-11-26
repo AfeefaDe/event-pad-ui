@@ -12,7 +12,7 @@
       </div>
     </div>
 
-    <section class="description">
+    <section v-if="event.description" class="description">
       <h2>Beschreibung</h2>
       <pre>{{event.description}}</pre>
     </section>
@@ -38,13 +38,7 @@
       </div>
     </section>
 
-
-    <section>
-      <h2>Leute einladen</h2>
-      <event-link-clipboard :event="event"></event-link-clipboard>
-    </section>
-
-    <section>
+    <section class="todos">
       <h2>Benötigt</h2>
       <ul>
         <li>Bier</li>
@@ -52,9 +46,37 @@
       </ul>
     </section>
 
+    <section class="discussion">
+      <h2>Diskussion</h2>
+      <div class="message">
+        <p class="author">Misha um 15:20</p>
+        <p>Ich schaff's leider nicht heute. Bin noch länger beim Klienten :/</p>
+      </div>
+      <div class="message">
+        <p class="author">Felix um 17:09</p>
+        <p>So schönes Wetter! Wir verlegen die Sitzung auf die Wiese vorm Hub.</p>
+      </div>
+      <div class="message">
+        <p class="author">Jens um 17:43</p>
+        <p>Wird 10 Min später bei mir.</p>
+      </div>
+      <div class="message event-start">- 18:00 Start -</div>
+      <div class="message">
+        <p class="author">Jens um 23:35</p>
+        <p>Wir sind echt ein geiles Team! Sorry für die vielen Details.</p>
+      </div>
+      <textarea class="inputStyle" rows="3" placeholder="Nachricht schreiben" />
+    </section>
+
+    <section>
+      <h2>Treffen merken & verbreiten</h2>
+      <event-link-clipboard :event="event"></event-link-clipboard>
+    </section>
+
     <section class="misc-actions">
+      <span><i class="material-icons">mail_outline</i></span>
       <span><i class="material-icons">star_border</i></span>
-      <span><i class="material-icons">event</i></span>
+      <a href="webcal://afeefa.de/events" target="_blank"><i class="material-icons">event</i></a>
       <span><i class="material-icons">vibration</i></span>
     </section>
 
@@ -193,15 +215,42 @@ p {
   }
 }
 
+.todos {
+}
+
 .misc-actions {
+  /*background-color: $creme;*/
   display: flex;
   justify-content: space-evenly;
 
-  span {
+  span, a {
     display: block;
     margin: 0 1em;
 
-    i { font-size: 3rem; }
+    i { font-size: 2.5rem; }
   }
 }
+
+.discussion {
+  background-color: $creme;
+ }
+  .message {
+    background-color: $white;
+    margin-bottom: 1rem;
+    padding: .5rem;
+    line-height: 1.2rem;
+      
+    &.event-start {
+      background-color: inherit;
+      font-style: italic;
+      text-align: center;
+    }
+  }
+  .author {
+    color: lighten($black, 40);
+    font-size: .8rem;
+  }
+  textarea {
+    background-color: $white;
+  }
 </style>

@@ -1,5 +1,6 @@
 <template>
-  <div>
+
+  <div v-if="event">
 
     <div ref="header" class="header">
       <div ref="pattern" class="pattern"></div>
@@ -86,10 +87,9 @@
 </template>
 
 <script>
+// import Trianglify from 'trianglify'
 import EventLinkClipboard from '@/components/EventLinkClipboard'
-import Event from '@/models/Event'
 import Events from '@/resources/Events'
-import Trianglify from 'trianglify'
 
 export default {
   name: 'ShowPad',
@@ -99,33 +99,8 @@ export default {
       event: null
     }
   },
-  computed: {
-    mailContent () {
-      return 'mailto:?body=' + this.event.generateFullLink() + '&subject=Einladung: ' + this.event.title
-    }
-  },
-  created: function () {
-    // coming from create and event is passed over
-    if (this.$route.params.event) {
-      this.event = this.$route.params.event
-    }
-
-    // coming from nowhere and event needs to be fetched by its uri
-    if (!this.event) {
-      Events.getEvent(this.$route.params.uri).then(event => {
-        if (event) this.event = new Event(event)
-      })
-    }
-
-    // if still nothing found, show NOT FOUND INFO
-    if (!this.event) {
-      alert('event nicht gefunden')
-      this.$router.push({ name: 'main' })
-    }
-
-    console.debug(this.event)
-  },
   mounted () {
+    /* should be rerendered by watching event.participants.length
     var participants = 30
 
     var pattern = Trianglify({
@@ -136,9 +111,31 @@ export default {
       y_colors: 'GnBu'
     })
     this.$refs.pattern.appendChild(pattern.svg())
-    this.$el.querySelector('svg').setAttribute('opacity', 0.5)
+    this.$el.querySelector('svg').setAttribute('opacity', 0.5) */
+  },
+  computed: {
+    mailContent () {
+      return 'mailto:?body=' + this.event.generateFullLink() + '&subject=Einladung: ' + this.event.title
+    }
+  },
+  beforeRouteEnter (to, from, next) {
+    if (to.params.event) {
+      next(vm => vm.setEvent(to.params.event))
+    } else {
+      Events.getEvent(to.params.uri).then((loadedEvent) => {
+        if (loadedEvent) {
+          next(vm => vm.setEvent(loadedEvent))
+        } else {
+          // @todo: trigger alert on main page
+          next('/')
+        }
+      })
+    }
   },
   methods: {
+    setEvent: function (event) {
+      this.event = event
+    },
     openLocationInGMaps: function () {
       window.open('http://maps.google.de/maps/search/' + this.event.location.replace(' ', '+'))
     },

@@ -45,7 +45,7 @@
     <section class="todos" v-if="tasks.length">
       <h2>Benötigt</h2>
       <ul>
-        <li v-for="task in tasks">{{ task.name }}</li>
+        <li v-for="task in tasks" :key="task.id">{{ task.name }}</li>
       </ul>
     </section>
 

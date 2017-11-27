@@ -58,7 +58,7 @@ export default {
   text-transform: uppercase;
   color: $white;
   font-size: 20vw;
-  line-height: 14vw;
+  line-height: 13vw;
   font-weight: 800;
 }
 .title, .subtitle {

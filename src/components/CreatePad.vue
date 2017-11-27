@@ -27,7 +27,7 @@
           <a href="" @click.prevent="addTask"><i class="material-icons">add_circle_outline</i></a>
         </div>
         <div class="task-list">
-          <div class="task-list__item" v-for="(task, index) in tasks">
+          <div class="task-list__item" v-for="(task, index) in tasks" :key="index">
             <div>{{ index + 1 }}. {{ task.name }}</div>
             <a href="" @click.prevent="removeTask(task)"><i class="material-icons">remove_circle_outline</i></a>
           </div>

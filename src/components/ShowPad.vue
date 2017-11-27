@@ -45,7 +45,10 @@
     <section class="todos" v-if="tasks.length">
       <h2>Benötigt</h2>
       <ul>
-        <li v-for="task in tasks" :key="task.id">{{ task.name }}</li>
+        <li v-for="task in tasks" :key="task.id">
+          {{ task.name }}
+          <a href="" @click.prevent="takeTask(task)"><i class="material-icons">add_circle_outline</i></a>
+        </li>
       </ul>
     </section>
 
@@ -109,9 +112,10 @@ export default {
     Events.getEvent(this.$route.params.uri).then((loadedEvent) => {
       if (loadedEvent) {
         this.event = loadedEvent
-        this.fetchParticipants()
-        this.fetchTasks()
-        this.recoverParticipantFromStorage()
+        this.fetchParticipants().then(() => {
+          this.recoverParticipantFromStorage()
+          this.fetchTasks()
+        })
       } else {
         // @todo: trigger alert on main page
         this.$router.replace('/')
@@ -133,27 +137,20 @@ export default {
   },
   methods: {
     recoverParticipantFromStorage () {
-      const storedParticipation = localStorage.getItem(`event-${this.event.uri}`)
-      if (storedParticipation) {
-        const participant = JSON.parse(storedParticipation)
-        this.participant.id = participant.id
-        this.participant.name = participant.name
-      } else {
-        this.participant.name = localStorage.getItem('participant.name') || ''
+      const participantId = localStorage.getItem(`event-${this.event.uri}`)
+      if (participantId) {
+        const participant = this.participants.find(participant => participant.id === parseInt(participantId))
+        if (participant) {
+          this.participant = participant
+        } else {
+          localStorage.removeItem(`event-${this.event.uri}`)
+        }
       }
+      this.participant.name = this.participant.name || localStorage.getItem('name') || ''
     },
     fetchParticipants () {
-      Events.getParticipans(this.event).then(participants => {
+      return Events.getParticipans(this.event).then(participants => {
         this.participants = participants
-        // check if the user already participates
-        const storedParticipantId = localStorage.getItem('participant.id')
-        if (storedParticipantId) {
-          this.participants.forEach(participant => {
-            if (parseInt(storedParticipantId) === participant.id) {
-              this.participant = participant
-            }
-          })
-        }
       })
     },
     fetchTasks () {
@@ -174,33 +171,33 @@ export default {
     },
     attend: function () {
       this.participant.rsvp = Participant.I_ATTEND
-      this.updateOrAdd()
+      this.updateOrAddParticipant()
     },
     miss: function () {
       this.participant.rsvp = Participant.I_MISS
-      this.updateOrAdd()
+      this.updateOrAddParticipant()
     },
     storeParticipation () {
-      const participant = {
-        id: this.participant.id,
-        name: this.participant.name
-      }
-      localStorage.setItem(`event-${this.event.uri}`, JSON.stringify(participant))
-      localStorage.setItem('participant.name', this.participant.name)
+      localStorage.setItem(`event-${this.event.uri}`, this.participant.id)
+      localStorage.setItem('name', this.participant.name)
     },
-    updateOrAdd () {
+    takeTask (task) {
+      Events.assignTask(this.event, task, this.participant).then(() => {
+        this.fetchTasks()
+      })
+    },
+    updateOrAddParticipant () {
+      let promise
       if (this.participant.id) {
-        Events.updateParticipant(this.event, this.participant).then(participant => {
-          this.participant = participant
-          this.fetchParticipants()
-        })
+        promise = Events.updateParticipant(this.event, this.participant)
       } else {
-        Events.addParticipant(this.event, this.participant).then(participant => {
-          this.participant = participant
-          this.storeParticipation()
-          this.fetchParticipants()
-        })
+        promise = Events.addParticipant(this.event, this.participant)
       }
+      promise.then(participant => {
+        this.participant = participant
+        this.storeParticipation()
+        this.fetchParticipants()
+      })
     }
   }
 }

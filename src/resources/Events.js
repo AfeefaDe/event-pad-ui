@@ -90,4 +90,13 @@ export default class EventsResource {
       return false
     })
   }
+
+  static assignTask (event, task, participant) {
+    return Vue.http.post(`/api/events/${event.id}/tasks/${task.id}/participants`, participant.serialize()).then(response => {
+      return true
+    }).catch(response => {
+      console.log('post hat nicht geklappt', response)
+      return false
+    })
+  }
 }

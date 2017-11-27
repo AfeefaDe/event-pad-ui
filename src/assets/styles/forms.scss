@@ -17,6 +17,14 @@ input, textarea {
   &:focus {
     border-color: $petrol;
   }
+
+  &.catchy {
+    background-color: $creme;
+    border: none;
+    border: 1px dashed $lightGray;
+    padding: .5em;
+    /*box-shadow: 0 0 5px $lightGray;*/
+  }
 }
 
 input[type=checkbox] {

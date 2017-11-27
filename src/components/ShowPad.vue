@@ -20,7 +20,7 @@
 
     <section>
       <div>
-        Name: <input v-model="participant.name">
+        <input class="catchy" v-model="participant.name" placeholder="Dein Name...">
       </div>
       <div class="participants">
         <div class="list">

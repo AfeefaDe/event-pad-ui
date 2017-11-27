@@ -111,6 +111,7 @@ export default {
         this.event = loadedEvent
         this.fetchParticipants()
         this.fetchTasks()
+        this.recoverParticipantFromStorage()
       } else {
         // @todo: trigger alert on main page
         this.$router.replace('/')
@@ -118,7 +119,6 @@ export default {
     })
 
     this.participant = new Participant()
-    this.participant.name = localStorage.getItem('participant.name') || ''
   },
   computed: {
     mailContent () {
@@ -132,6 +132,16 @@ export default {
     }
   },
   methods: {
+    recoverParticipantFromStorage () {
+      const storedParticipation = localStorage.getItem(`event-${this.event.uri}`)
+      if (storedParticipation) {
+        const participant = JSON.parse(storedParticipation)
+        this.participant.id = participant.id
+        this.participant.name = participant.name
+      } else {
+        this.participant.name = localStorage.getItem('participant.name') || ''
+      }
+    },
     fetchParticipants () {
       Events.getParticipans(this.event).then(participants => {
         this.participants = participants
@@ -170,14 +180,12 @@ export default {
       this.participant.rsvp = Participant.I_MISS
       this.updateOrAdd()
     },
-    storeName () {
-      localStorage.setItem('participant.name', this.participant.name)
-    },
     storeParticipation () {
-      // const data = {
-      //   eventId: this.event.id,
-      //   participantId: this.participant.id
-      // }
+      const participant = {
+        id: this.participant.id,
+        name: this.participant.name
+      }
+      localStorage.setItem(`event-${this.event.uri}`, JSON.stringify(participant))
       localStorage.setItem('participant.name', this.participant.name)
     },
     updateOrAdd () {
@@ -193,7 +201,6 @@ export default {
           this.fetchParticipants()
         })
       }
-      this.storeName()
     }
   }
 }

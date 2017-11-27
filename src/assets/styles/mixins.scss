@@ -3,8 +3,10 @@
   font-size: 1rem;
   text-align: left;
   display: block;
-  color: $blue;
-  margin-top: 2em;
+    text-transform: uppercase;
+
+  color: $lightGray;
+  margin-top: 0;
 }
 
 @mixin placeholder {

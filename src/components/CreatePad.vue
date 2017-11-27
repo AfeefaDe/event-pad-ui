@@ -1,25 +1,27 @@
 <template>
 <div>
   <div class="content">
+    <header>
+      <h1>Neues Treffen</h1>
+    </header>
     <tabbed-form :event="null" @saveActionTriggered="createEvent" :hasValidationError="hasValidationError">
       <div slot="tab0">
-        <h1>Neues Treffen</h1>
 
-        <label for="title">Titel der Veranstaltung *</label>
+        <label for="title">Was</label>
         <input type="text" id="title" v-model="newEvent.title" autofocus
-          @blur="checkTitleEmpty()" @input="checkTitleEmpty()">
+          @blur="checkTitleEmpty()" @input="checkTitleEmpty()" placeholder="Titel eingeben...">
         <span class="error-message" v-if="titleError">Bitte gib einen Titel ein.</span>
 
-        <label for="dateStart">Datum *</label>
+        <label for="dateStart">Wann</label>
         <input type="datetime-local" v-model="dateStart" id="dateStart"
           @blur="checkDateEmpty()" @input="checkDateEmpty()">
         <span class="error-message" v-if="dateError">Bitte gib eine Zeit an.</span>
 
-        <label for="place">Ort</label>
-        <input type="text" id="place" v-model="newEvent.location">
+        <label for="place">Wo</label>
+        <input type="text" id="place" v-model="newEvent.location" placeholder="Ort eingeben...">
 
-        <label for="description">Beschreibung</label>
-        <textarea class="inputStyle" id="description" v-model="newEvent.description"></textarea>
+        <label for="description">Details</label>
+        <textarea class="inputStyle" id="description" v-model="newEvent.description" placeholder="..."></textarea>
 
         <label>Aufgaben zu verteilen</label>
         <div class="task-input">
@@ -114,6 +116,11 @@ export default {
 
 <style lang="scss" scoped>
 @import "~variables";
+
+header {
+  text-align: center;
+  margin: 0 0 2em;
+}
 
 i {
   color: $darkGray;

@@ -21,8 +21,12 @@ body {
 }
 
 h1 {
-  font-size: 2rem;
+  font-size: 1.3rem;
   display: inline-block;
+  margin: 0;
+  text-transform: uppercase;
+  border-bottom: .15em solid $black;
+
 }
 
 section {

@@ -48,7 +48,7 @@ input {
 }
 
 button {
-  margin: 0 0 0 1rem;
+  margin: 0 0 0 .5rem;
   height: 3rem;
   /*display: inline;*/
 }

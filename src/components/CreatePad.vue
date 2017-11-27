@@ -7,7 +7,7 @@
     <tabbed-form :event="null" @saveActionTriggered="createEvent" :hasValidationError="hasValidationError">
       <div slot="tab0">
 
-        <label for="title">Was</label>
+        <!-- <label for="title">Was</label> -->
         <input type="text" id="title" v-model="newEvent.title" autofocus
           @blur="checkTitleEmpty()" @input="checkTitleEmpty()" placeholder="Titel eingeben...">
         <span class="error-message" v-if="titleError">Bitte gib einen Titel ein.</span>
@@ -119,14 +119,19 @@ export default {
 
 header {
   text-align: center;
-  margin: 0 0 2em;
+  margin: 0 0 3em;
 }
 
 i {
   color: $darkGray;
 }
 
+label {
+  margin-top: 2rem;
+}
 .error-message {
+  position: absolute;
+  /*top: 0;*/
   font-size: .9em;
   color: #ee3333;
 }

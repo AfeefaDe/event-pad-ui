@@ -26,7 +26,7 @@ export default class EventsResource {
   }
 
   static getParticipans (event) {
-    return Vue.http.get(`/api/events/${event.id}/participants`).then(response => {
+    return Vue.http.get(`/api/events/${event.uri}/participants`).then(response => {
       const participants = []
       for (const json of response.body) {
         const participant = new Participant()
@@ -41,7 +41,7 @@ export default class EventsResource {
   }
 
   static getTasks (event) {
-    return Vue.http.get(`/api/events/${event.id}/tasks`).then(response => {
+    return Vue.http.get(`/api/events/${event.uri}/tasks`).then(response => {
       const tasks = []
       for (const json of response.body) {
         const task = new Task()
@@ -56,7 +56,7 @@ export default class EventsResource {
   }
 
   static addParticipant (event, participant) {
-    return Vue.http.post(`/api/events/${event.id}/participants`, participant.serialize()).then(response => {
+    return Vue.http.post(`/api/events/${event.uri}/participants`, participant.serialize()).then(response => {
       const participant = new Participant()
       participant.deserialize(response.body)
       return participant
@@ -67,7 +67,7 @@ export default class EventsResource {
   }
 
   static updateParticipant (event, participant) {
-    return Vue.http.patch(`/api/events/${event.id}/participants/${participant.id}`, participant.serialize()).then(response => {
+    return Vue.http.patch(`/api/events/${event.uri}/participants/${participant.id}`, participant.serialize()).then(response => {
       const participant = new Participant()
       participant.deserialize(response.body)
       return participant
@@ -83,7 +83,7 @@ export default class EventsResource {
       serializedTasks.push(task.serialize())
     }
 
-    return Vue.http.post(`/api/events/${event.id}/tasks`, serializedTasks).then(response => {
+    return Vue.http.post(`/api/events/${event.uri}/tasks`, serializedTasks).then(response => {
       return true
     }).catch(response => {
       console.log('post hat nicht geklappt', response)
@@ -92,7 +92,7 @@ export default class EventsResource {
   }
 
   static assignTask (event, task, participant) {
-    return Vue.http.post(`/api/events/${event.id}/tasks/${task.id}/participants`, participant.serialize()).then(response => {
+    return Vue.http.post(`/api/events/${event.uri}/tasks/${task.id}/participants`, participant.serialize()).then(response => {
       const participant = new Participant()
       participant.deserialize(response.body)
       return participant
@@ -103,7 +103,7 @@ export default class EventsResource {
   }
 
   static leaveTask (event, task, assignee) {
-    return Vue.http.delete(`/api/events/${event.id}/tasks/${task.id}/participants/${assignee.id}`).then(response => {
+    return Vue.http.delete(`/api/events/${event.uri}/tasks/${task.id}/participants/${assignee.id}`).then(response => {
       return true
     }).catch(response => {
       console.log('delete hat nicht geklappt', response)

@@ -144,7 +144,8 @@ export default {
         this.recoverParticipantFromStorage()
       } else {
         // @todo: trigger alert on main page
-        this.$router.replace('/')
+        // this.$router.replace('/')
+        alert('event nicht gefunden ' + this.$route.params.uri)
       }
     })
   },

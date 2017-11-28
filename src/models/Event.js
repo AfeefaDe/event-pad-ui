@@ -1,3 +1,6 @@
+import Participant from './Participant'
+import Task from './Task'
+
 export default class Event {
   constructor () {
     this.init()
@@ -15,6 +18,9 @@ export default class Event {
     this.dateStart.setMinutes(0)
 
     this.uri = ''
+
+    this.participants = []
+    this.tasks = []
   }
 
   deserialize (json) {
@@ -26,6 +32,22 @@ export default class Event {
     this.description = json.description
     this.dateStart = new Date(json.dateStart)
     this.uri = json.uri
+
+    if (json.participants) {
+      for (let participantJson of json.participants) {
+        const participant = new Participant()
+        participant.deserialize(participantJson)
+        this.participants.push(participant)
+      }
+    }
+
+    if (json.tasks) {
+      for (let taskJson of json.tasks) {
+        const task = new Task()
+        task.deserialize(taskJson)
+        this.tasks.push(task)
+      }
+    }
   }
 
   serialize () {

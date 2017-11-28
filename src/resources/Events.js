@@ -93,9 +93,20 @@ export default class EventsResource {
 
   static assignTask (event, task, participant) {
     return Vue.http.post(`/api/events/${event.id}/tasks/${task.id}/participants`, participant.serialize()).then(response => {
-      return true
+      const participant = new Participant()
+      participant.deserialize(response.body)
+      return participant
     }).catch(response => {
       console.log('post hat nicht geklappt', response)
+      return false
+    })
+  }
+
+  static leaveTask (event, task, assignee) {
+    return Vue.http.delete(`/api/events/${event.id}/tasks/${task.id}/participants/${assignee.id}`).then(response => {
+      return true
+    }).catch(response => {
+      console.log('delete hat nicht geklappt', response)
       return false
     })
   }

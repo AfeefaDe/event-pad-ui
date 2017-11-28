@@ -1,3 +1,5 @@
+import Participant from './Participant'
+
 export default class Task {
   constructor () {
     this.init()
@@ -6,6 +8,8 @@ export default class Task {
   init () {
     this.id = null
     this.name = ''
+
+    this.assignees = []
   }
 
   deserialize (json) {
@@ -13,6 +17,12 @@ export default class Task {
 
     this.id = json.id
     this.name = json.name
+
+    for (let assigneeJson of json.assignees) {
+      const assignee = new Participant()
+      assignee.deserialize(assigneeJson)
+      this.assignees.push(assignee)
+    }
   }
 
   serialize () {

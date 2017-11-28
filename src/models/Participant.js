@@ -11,7 +11,7 @@ export default class Participant {
     this.id = null
     this.name = ''
     this.email = ''
-    this.rsvp = ''
+    this.rsvp = Participant.I_DONT_KNOW
   }
 
   deserialize (json) {
@@ -19,8 +19,8 @@ export default class Participant {
 
     this.id = json.id
     this.name = json.name
-    this.email = json.email
-    this.rsvp = json.rsvp
+    this.email = json.email || ''
+    this.rsvp = json.rsvp || ''
   }
 
   serialize () {

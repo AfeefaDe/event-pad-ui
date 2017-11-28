@@ -40,7 +40,13 @@
       padding: .9em 1.5em;
     }
 
-		&.button-small-margin {
+    &.button-xs {
+      font-size: .8em;
+      line-height: 1em;
+      padding: 0.3em;
+    }
+
+    &.button-small-margin {
 			margin: .5rem auto;
 		}
 }

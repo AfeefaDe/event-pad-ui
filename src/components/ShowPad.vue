@@ -11,18 +11,15 @@
           <span class="location" @click="openLocationInGMaps()">{{event.location}}</span>
         </p>
       </div>
+      <div class="name-button">
+        <a v-if="participant.name" href="" @click.prevent="changeName">{{ participant.name }} <i class="material-icons">mode_edit</i></a>
+        <a v-else href="" @click.prevent="changeName">Wer bist du?</a>
+      </div>
     </div>
 
     <section v-if="event.description" class="description">
       <h2>Beschreibung</h2>
       {{event.description}}
-    </section>
-
-    <section>
-      <h2>Wer bist du?</h2>
-      <div>
-        <input class="catchy" v-model="participant.name" placeholder="Dein Name...">
-      </div>
     </section>
 
     <section>
@@ -32,8 +29,7 @@
         <button class="button-green button-small button-small-margin" @click="attend">Komme</button>
           <ul class="participant-tags">
             <li v-for="attendent in attenders" :key="attendent.id"
-              :class="['participant-tag', {me: attendent.id === participant.id}]"
-              @click="changeParticipant(attendent)">
+              :class="['participant-tag', {me: attendent.id === participant.id}]">
               {{ attendent.name }}
             </li>
           </ul>
@@ -42,8 +38,7 @@
           <button class="button-default button-small button-small-margin" @click="unsure()">Weiß nicht</button>
           <ul class="participant-tags">
             <li v-for="unsurer in unsurers" :key="unsurer.id"
-              :class="['participant-tag', {me: unsurer.id === participant.id}]"
-              @click="changeParticipant(unsurer)">
+              :class="['participant-tag', {me: unsurer.id === participant.id}]">
               {{ unsurer.name }}
             </li>
           </ul>
@@ -52,8 +47,7 @@
           <button class="button-red button-small button-small-margin" @click="miss()">Komme nicht</button>
           <ul class="participant-tags">
             <li v-for="misser in missers" :key="misser.id"
-              :class="['participant-tag', {me: misser.id === participant.id}]"
-              @click="changeParticipant(misser)">
+              :class="['participant-tag', {me: misser.id === participant.id}]">
               {{ misser.name }}
             </li>
           </ul>
@@ -69,8 +63,7 @@
         <button class="button-red button-xs" href="" @click.prevent="leaveTask(task)" v-if="haveTask(task)">Ich mach das doch nicht</button>
         <ul class="participant-tags">
           <li v-for="assignee in task.assignees" :key="assignee.id"
-            :class="['participant-tag', {me: assignee.id === participant.id}]"
-            @click="changeParticipant(assignee)">
+            :class="['participant-tag', {me: assignee.id === participant.id}]">
             {{ assignee.name }}
           </li>
         </ul>
@@ -102,7 +95,7 @@
       </div>
     </section>
 
-    <section>
+    <section v-if="false">
       <h2>Merken & Verbreiten</h2>
       <event-link-clipboard :event="event"></event-link-clipboard>
     </section>
@@ -113,18 +106,27 @@
       <a href="webcal://afeefa.de/events" target="_blank"><i class="material-icons">event</i><br>In Kalender speichern</a>
     </section>
 
+    <name-selection
+      :participants="participants"
+      :participant="participant"
+      ref="nameSelection"
+      @onRename="onRenamePerson"
+      @onAdd="onAddPerson"
+      @onReset="onResetPerson"
+      @onChange="onChangePerson">
+    </name-selection>
+
   </div>
 </template>
 
 <script>
-// import Trianglify from 'trianglify'
-import EventLinkClipboard from '@/components/EventLinkClipboard'
+import EventLinkClipboard from './EventLinkClipboard'
 import Events from '@/resources/Events'
 import Participant from '@/models/Participant'
+import NameSelection from './NameSelection'
 
 export default {
   name: 'ShowPad',
-  components: {EventLinkClipboard},
   data () {
     return {
       event: null,
@@ -164,6 +166,10 @@ export default {
     }
   },
   methods: {
+    changeName () {
+      this.$refs.nameSelection.show()
+    },
+
     recoverParticipantFromStorage () {
       const participantId = localStorage.getItem(`event-${this.event.uri}`)
       if (participantId) {
@@ -176,59 +182,79 @@ export default {
       }
       this.participant.name = this.participant.name || localStorage.getItem('name') || ''
     },
+
     fetchParticipants () {
       return Events.getParticipans(this.event).then(participants => {
         this.participants = participants
       })
     },
+
     fetchTasks () {
       Events.getTasks(this.event).then(tasks => {
         this.tasks = tasks
       })
     },
+
     openLocationInGMaps: function () {
       window.open('http://maps.google.de/maps/search/' + this.event.location.replace(' ', '+'))
     },
-    userAction () {
-      let userName = prompt('Gib deinen Namen einen, mit andere dich erkennen:')
-      console.debug(userName)
-    },
+
     attend () {
       this.participant.rsvp = Participant.I_ATTEND
       this.updateOrAddParticipant()
     },
+
     miss () {
       this.participant.rsvp = Participant.I_MISS
       this.updateOrAddParticipant()
     },
+
     unsure () {
       this.participant.rsvp = Participant.I_DONT_KNOW
       this.updateOrAddParticipant()
     },
-    changeParticipant: function (participant) {
-      this.participant = participant
-    },
+
     haveTask (task) {
       return task.assignees.some(p => p.id === this.participant.id)
     },
+
     storeParticipation () {
       localStorage.setItem(`event-${this.event.uri}`, this.participant.id)
       localStorage.setItem('name', this.participant.name)
     },
+
     takeTask (task) {
+      if (!this.participant.name) {
+        this.$refs.nameSelection.show().then(() => {
+          this.takeTask(task)
+        })
+        return
+      }
+
       Events.assignTask(this.event, task, this.participant).then(participant => {
-        this.participant = participant
-        this.storeParticipation()
+        if (participant) {
+          this.participant = participant
+          this.storeParticipation()
+        }
         this.fetchTasks()
         this.fetchParticipants()
       })
     },
+
     leaveTask (task) {
       Events.leaveTask(this.event, task, this.participant).then(() => {
         this.fetchTasks()
       })
     },
+
     updateOrAddParticipant (participant = this.participant) {
+      if (!this.participant.name) {
+        this.$refs.nameSelection.show().then(() => {
+          this.updateOrAddParticipant(this.participant)
+        })
+        return
+      }
+
       let promise
       if (this.participant.id) {
         promise = Events.updateParticipant(this.event, participant)
@@ -236,11 +262,40 @@ export default {
         promise = Events.addParticipant(this.event, participant)
       }
       promise.then(participant => {
-        this.participant = participant
-        this.storeParticipation()
+        if (participant) {
+          this.participant = participant
+          this.storeParticipation()
+        }
         this.fetchParticipants()
+        this.fetchTasks()
       })
+    },
+
+    onRenamePerson (name) {
+      this.participant.name = name
+      this.updateOrAddParticipant()
+    },
+
+    onAddPerson (name) {
+      this.participant.name = name
+      this.updateOrAddParticipant()
+    },
+
+    onResetPerson () {
+      localStorage.removeItem(`event-${this.event.uri}`)
+      localStorage.removeItem('name')
+      this.participant = new Participant()
+    },
+
+    onChangePerson (participant) {
+      this.participant = participant
+      this.storeParticipation()
     }
+  },
+
+  components: {
+    EventLinkClipboard,
+    NameSelection
   }
 }
 </script>
@@ -274,6 +329,29 @@ p {
   z-index: 5;
 }
 
+.name-button {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  z-index: 11;
+
+  a {
+    background-color: $green;
+    padding: 2px 8px;
+    border-radius: 2px;
+    color: white;
+    text-decoration: none;
+    display: block;
+  }
+
+  i {
+    vertical-align: middle;
+    font-size: 1.2em;
+    position: relative;
+    top: -2px;
+  }
+}
+
 .header-content {
   width: 100%;
   padding: 1rem;
@@ -286,29 +364,6 @@ p {
 .location {
   border-bottom: 1px dashed white;
   cursor: pointer;
-}
-
-.participant-tag {
-  display: inline-block;
-  background-color: $creme;
-  margin-bottom: .3rem;
-  padding: 0 .4rem;
-  margin-left: .2rem;
-  cursor: pointer;
-  &:first-child {
-    margin-left: 0;
-  }
-
-  &.me {
-    background-color: $blue;
-    color: $white;
-  }
-}
-
-.participant-tags {
-  list-style-type: none;
-  margin: 0;
-  padding-left: 0;
 }
 
 .participants {
@@ -355,39 +410,42 @@ p {
 
 .discussion {
   background-color: $creme;
- }
-  .message {
+}
+
+.message {
+  background-color: $white;
+  margin-bottom: 1rem;
+  padding: .5rem;
+  line-height: 1.2rem;
+
+  &.event-start {
+    background-color: inherit;
+    font-style: italic;
+    text-align: center;
+  }
+}
+
+.author {
+  color: lighten($black, 40);
+  font-size: .8rem;
+}
+
+.user-message-input {
+  display: flex;
+  align-items: flex-end;
+
+  textarea {
     background-color: $white;
-    margin-bottom: 1rem;
-    padding: .5rem;
-    line-height: 1.2rem;
-
-    &.event-start {
-      background-color: inherit;
-      font-style: italic;
-      text-align: center;
-    }
+    height: 3rem;
+    margin: 0;
+    padding: .5em;
+    font-size: 1rem;
   }
-  .author {
-    color: lighten($black, 40);
-    font-size: .8rem;
-  }
-  .user-message-input {
-    display: flex;
-    align-items: flex-end;
 
-    textarea {
-      background-color: $white;
-      height: 3rem;
-      margin: 0;
-      padding: .5em;
-      font-size: 1rem;
-    }
-
-    button {
-      background-color: $white;
-      margin: 0 0 0 .5em;
-      height: 3rem;
-    }
+  button {
+    background-color: $white;
+    margin: 0 0 0 .5em;
+    height: 3rem;
   }
+}
 </style>

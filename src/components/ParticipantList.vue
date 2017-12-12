@@ -55,8 +55,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import './src/assets/styles/variables.scss';
-@import './src/assets/styles/mixins.scss';
+@import '~variables';
+@import '~mixins';
 
 .participant-tag {
   @include user-select();

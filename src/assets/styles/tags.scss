@@ -1,4 +1,3 @@
-
 .participant-tag {
   @include user-select();
 
@@ -14,6 +13,10 @@
   &.me {
     background-color: $blue;
     color: $white;
+  }
+
+  &.selectable {
+    cursor: pointer;
   }
 }
 

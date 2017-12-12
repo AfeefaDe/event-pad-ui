@@ -31,18 +31,13 @@
                 <button class="button-small button-small-margin" @click="add()">OK</button>
               </div>
             </section>
-            <section>
+            <section v-if="event.participants.length">
               <h2>Ich war schon hier</h2>
-              <ul class="participant-tags">
-                <li v-for="participant in event.participants" :key="participant.id"
-                  :class="['participant-tag', {me: participantToSelect === participant}]"
-                  @mouseover="participantToSelect = participant"
-                  @mouseout="participantToSelect = null"
-                  @click="selectParticipant(participant)">
-                  {{ participant.name }}
-                </li>
-              </ul>
-
+              <participant-list
+                :participants="event.participants"
+                :selectable="true"
+                @onSelect="hide">
+              </participant-list>
             </section>
           </div>
         </div>
@@ -55,6 +50,7 @@
 <script>
 import Vue from 'vue'
 import currentParticipant from '@/services/CurrentParticipant'
+import ParticipantList from './ParticipantList'
 
 export default {
   props: ['event'],
@@ -142,16 +138,15 @@ export default {
       this.focusInput()
     },
 
-    selectParticipant (participant) {
-      this.me.setParticipant(participant)
-      this.hide()
-    },
-
     focusInput () {
       Vue.nextTick(() => {
         this.$refs.nameInput.focus()
       })
     }
+  },
+
+  components: {
+    ParticipantList
   }
 }
 </script>
@@ -229,10 +224,6 @@ export default {
         display: inline-block;
         margin-right: 10px;
       }
-    }
-
-    .participant-tag {
-      cursor: pointer;
     }
   }
 }

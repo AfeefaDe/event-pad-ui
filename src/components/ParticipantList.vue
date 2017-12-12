@@ -53,3 +53,36 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+@import './src/assets/styles/variables.scss';
+@import './src/assets/styles/mixins.scss';
+
+.participant-tag {
+  @include user-select();
+
+  display: inline-block;
+  background-color: $creme;
+  margin-bottom: .3rem;
+  padding: 0 .4rem;
+  margin-left: .2rem;
+  &:first-child {
+    margin-left: 0;
+  }
+
+  &.me {
+    background-color: $blue;
+    color: $white;
+  }
+
+  &.selectable {
+    cursor: pointer;
+  }
+}
+
+.participant-tags {
+  list-style-type: none;
+  margin: 0;
+  padding-left: 0;
+}
+</style>

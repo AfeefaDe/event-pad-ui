@@ -40,6 +40,24 @@ export default class EventsResource {
     })
   }
 
+  static addParticipant (event, participant) {
+    return Vue.http.post(`/api/events/${event.uri}/participants`, participant.serialize()).then(response => {
+      return Participant.fromJson(response.body)
+    }).catch(response => {
+      console.log('post hat nicht geklappt', response)
+      return false
+    })
+  }
+
+  static updateParticipant (event, participant) {
+    return Vue.http.patch(`/api/events/${event.uri}/participants/${participant.id}`, participant.serialize()).then(response => {
+      return Participant.fromJson(response.body)
+    }).catch(response => {
+      console.log('patch hat nicht geklappt', response)
+      return false
+    })
+  }
+
   static getTasks (event) {
     return Vue.http.get(`/api/events/${event.uri}/tasks`).then(response => {
       const tasks = []
@@ -51,28 +69,6 @@ export default class EventsResource {
       return tasks
     }).catch(response => {
       console.log('get hat nicht geklappt', response)
-      return false
-    })
-  }
-
-  static addParticipant (event, participant) {
-    return Vue.http.post(`/api/events/${event.uri}/participants`, participant.serialize()).then(response => {
-      const participant = new Participant()
-      participant.deserialize(response.body)
-      return participant
-    }).catch(response => {
-      console.log('post hat nicht geklappt', response)
-      return false
-    })
-  }
-
-  static updateParticipant (event, participant) {
-    return Vue.http.patch(`/api/events/${event.uri}/participants/${participant.id}`, participant.serialize()).then(response => {
-      const participant = new Participant()
-      participant.deserialize(response.body)
-      return participant
-    }).catch(response => {
-      console.log('patch hat nicht geklappt', response)
       return false
     })
   }
@@ -93,9 +89,7 @@ export default class EventsResource {
 
   static assignTask (event, task, participant) {
     return Vue.http.post(`/api/events/${event.uri}/tasks/${task.id}/participants`, participant.serialize()).then(response => {
-      const participant = new Participant()
-      participant.deserialize(response.body)
-      return participant
+      return Participant.fromJson(response.body)
     }).catch(response => {
       console.log('post hat nicht geklappt', response)
       return false

@@ -9,10 +9,10 @@
         </div>
         <div class="modal__title">Wer bist du?</div>
         <div class="modal__content">
-          <div v-if="participant.name">
+          <div v-if="me.name">
             <section>
-              <h2>Ich bin nicht {{ participant.name }}</h2>
-              <button @click="resetPerson">Person wechseln</button>
+              <h2>Ich bin nicht {{ me.name }}</h2>
+              <button @click="resetParticipant">Person wechseln</button>
             </section>
             <section>
               <h2>Namen korrigieren</h2>
@@ -34,7 +34,7 @@
             <section>
               <h2>Ich war schon hier</h2>
               <ul class="participant-tags">
-                <li v-for="participant in participants" :key="participant.id"
+                <li v-for="participant in event.participants" :key="participant.id"
                   :class="['participant-tag', {me: participantToSelect === participant}]"
                   @mouseover="participantToSelect = participant"
                   @mouseout="participantToSelect = null"
@@ -54,31 +54,32 @@
 
 <script>
 import Vue from 'vue'
+import currentParticipant from '@/services/CurrentParticipant'
 
 export default {
-  props: ['participants', 'participant'],
+  props: ['event'],
 
   data () {
     return {
+      me: currentParticipant,
       showWindow: false,
       hasCancelListeners: false,
       participantName: '',
-      participantToSelect: null,
-      promiseResolve: null
+      participantToSelect: null
     }
   },
 
   methods: {
-    onMouseUp (event) {
+    onMouseUp (event) { // click outside
       const modalDom = this.$el.querySelector('.modal')
       if (!modalDom.contains(event.target)) {
-        this.hide()
+        this.cancel()
       }
     },
 
-    onKeyUp (event) {
+    onKeyUp (event) { // esc
       if (event.keyCode === 27) {
-        this.hide()
+        this.cancel()
       }
     },
 
@@ -89,44 +90,60 @@ export default {
         this.hasCancelListeners = true
       }
 
-      this.participantName = this.participant.name
+      this.participantName = this.me.name
+      this.participantToSelect = null
       this.showWindow = true
 
-      if (!this.participant.name) {
+      if (!this.me.name) {
         this.focusInput()
       }
 
-      return new Promise((resolve, reject) => {
-        this.$on('hide', resolve)
-      })
+      const response = {
+        then: callback => {
+          const handleHide = reason => {
+            if (reason === 'done') {
+              callback()
+            }
+            this.$off('hide', handleHide)
+          }
+          this.$on('hide', handleHide)
+        }
+      }
+
+      return response
     },
 
-    hide () {
+    hide (reason = 'done') {
       window.removeEventListener('keyup', this.onKeyUp)
       window.removeEventListener('mouseup', this.onMouseUp)
       this.hasCancelListeners = false
       this.showWindow = false
-      this.$emit('hide')
+      this.$emit('hide', reason)
+    },
+
+    cancel () {
+      this.hide('cancel')
     },
 
     rename () {
-      this.$emit('onRename', this.participantName)
+      this.me.name = this.participantName
+      this.$emit('onRename') // parent may update name on server
       this.hide()
     },
 
     add () {
-      this.$emit('onAdd', this.participantName)
+      this.me.name = this.participantName
       this.hide()
     },
 
-    resetPerson () {
-      this.$emit('onReset')
+    resetParticipant () {
+      this.me.resetParticipant()
       this.participantName = ''
       this.focusInput()
     },
 
     selectParticipant (participant) {
-      this.$emit('onChange', participant)
+      this.me.setParticipant(participant)
       this.hide()
     },
 

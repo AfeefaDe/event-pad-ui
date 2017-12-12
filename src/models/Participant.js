@@ -3,6 +3,12 @@ export default class Participant {
   static I_ATTEND = '1'
   static I_DONT_KNOW = '2'
 
+  static fromJson (json) {
+    const participant = new Participant()
+    participant.deserialize(json)
+    return participant
+  }
+
   constructor () {
     this.init()
   }

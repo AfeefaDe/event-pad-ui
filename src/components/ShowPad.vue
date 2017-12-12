@@ -12,7 +12,7 @@
         </p>
       </div>
       <div class="name-button">
-        <a v-if="participant.name" href="" @click.prevent="changeName">{{ participant.name }} <i class="material-icons">mode_edit</i></a>
+        <a v-if="me.name" href="" @click.prevent="changeName">{{ me.name }} <i class="material-icons">mode_edit</i></a>
         <a v-else href="" @click.prevent="changeName">Wer bist du?</a>
       </div>
     </div>
@@ -26,47 +26,27 @@
       <h2>Teilnahme</h2>
       <div class="participants">
         <div class="list">
-        <button class="button-green button-small button-small-margin" @click="attend">Komme</button>
-          <ul class="participant-tags">
-            <li v-for="attendent in attenders" :key="attendent.id"
-              :class="['participant-tag', {me: attendent.id === participant.id}]">
-              {{ attendent.name }}
-            </li>
-          </ul>
+          <button class="button-green button-small button-small-margin" @click="attend">Komme</button>
+          <participant-list :participants="attendingPersons"></participant-list>
         </div>
         <div class="list unsure">
-          <button class="button-default button-small button-small-margin" @click="unsure()">Weiß nicht</button>
-          <ul class="participant-tags">
-            <li v-for="unsurer in unsurers" :key="unsurer.id"
-              :class="['participant-tag', {me: unsurer.id === participant.id}]">
-              {{ unsurer.name }}
-            </li>
-          </ul>
+          <button class="button-default button-small button-small-margin" @click="unsure">Weiß nicht</button>
+          <participant-list :participants="unsurePersons"></participant-list>
         </div>
         <div class="list not-coming">
-          <button class="button-red button-small button-small-margin" @click="miss()">Komme nicht</button>
-          <ul class="participant-tags">
-            <li v-for="misser in missers" :key="misser.id"
-              :class="['participant-tag', {me: misser.id === participant.id}]">
-              {{ misser.name }}
-            </li>
-          </ul>
+          <button class="button-red button-small button-small-margin" @click="miss">Komme nicht</button>
+          <participant-list :participants="missingPersons"></participant-list>
         </div>
       </div>
     </section>
 
-    <section class="todos" v-if="tasks.length">
+    <section class="todos" v-if="event.tasks.length">
       <h2>Aufgaben</h2>
-      <div v-for="task in tasks" :key="task.id">
+      <div v-for="task in event.tasks" :key="task.id">
         {{ task.name }}
         <button class="button-green button-xs" href="" @click.prevent="takeTask(task)" v-if="!haveTask(task)">Ich mach das</button>
         <button class="button-red button-xs" href="" @click.prevent="leaveTask(task)" v-if="haveTask(task)">Ich mach das doch nicht</button>
-        <ul class="participant-tags">
-          <li v-for="assignee in task.assignees" :key="assignee.id"
-            :class="['participant-tag', {me: assignee.id === participant.id}]">
-            {{ assignee.name }}
-          </li>
-        </ul>
+        <participant-list :participants="task.assignees"></participant-list>
       </div>
     </section>
 
@@ -107,13 +87,9 @@
     </section>
 
     <name-selection
-      :participants="participants"
-      :participant="participant"
+      :event="event"
       ref="nameSelection"
-      @onRename="onRenamePerson"
-      @onAdd="onAddPerson"
-      @onReset="onResetPerson"
-      @onChange="onChangePerson">
+      @onRename="onRenameParticipant">
     </name-selection>
 
   </div>
@@ -121,77 +97,71 @@
 
 <script>
 import EventLinkClipboard from './EventLinkClipboard'
+import ParticipantList from './ParticipantList'
 import Events from '@/resources/Events'
 import Participant from '@/models/Participant'
 import NameSelection from './NameSelection'
+import currentParticipant from '@/services/CurrentParticipant'
 
 export default {
   name: 'ShowPad',
+
   data () {
     return {
       event: null,
-      participant: null,
-      participants: [],
-      tasks: []
+      me: currentParticipant
     }
   },
-  created () {
-    this.participant = new Participant()
 
-    Events.getEvent(this.$route.params.uri).then(event => {
-      if (event) {
-        this.event = event
-        this.participants = event.participants
-        this.tasks = event.tasks
-        this.recoverParticipantFromStorage()
-      } else {
-        // @todo: trigger alert on main page
-        // this.$router.replace('/')
-        alert('event nicht gefunden ' + this.$route.params.uri)
-      }
-    })
+  created () {
+    this.loadEvent()
   },
+
   computed: {
     mailContent () {
       return 'mailto:?body=' + this.event.generateFullLink() + '&subject=Einladung: ' + this.event.title
     },
-    attenders () {
-      return this.participants.filter(p => p.rsvp === Participant.I_ATTEND)
+
+    attendingPersons () {
+      return this.event.participants.filter(p => p.rsvp === Participant.I_ATTEND)
     },
-    missers () {
-      return this.participants.filter(p => p.rsvp === Participant.I_MISS)
+
+    missingPersons () {
+      return this.event.participants.filter(p => p.rsvp === Participant.I_MISS)
     },
-    unsurers () {
-      return this.participants.filter(p => p.rsvp === Participant.I_DONT_KNOW)
+
+    unsurePersons () {
+      return this.event.participants.filter(p => p.rsvp === Participant.I_DONT_KNOW)
     }
   },
+
   methods: {
+    loadEvent () {
+      Events.getEvent(this.$route.params.uri).then(event => {
+        if (event) {
+          this.event = event
+          this.me.authenticateForEvent(event)
+        } else {
+          // @todo: trigger alert on main page
+          // this.$router.replace('/')
+          alert('event nicht gefunden ' + this.$route.params.uri)
+        }
+      })
+    },
+
     changeName () {
       this.$refs.nameSelection.show()
     },
 
-    recoverParticipantFromStorage () {
-      const participantId = localStorage.getItem(`event-${this.event.uri}`)
-      if (participantId) {
-        const participant = this.participants.find(participant => participant.id === parseInt(participantId))
-        if (participant) {
-          this.participant = participant
-        } else {
-          localStorage.removeItem(`event-${this.event.uri}`)
-        }
-      }
-      this.participant.name = this.participant.name || localStorage.getItem('name') || ''
-    },
-
     fetchParticipants () {
       return Events.getParticipans(this.event).then(participants => {
-        this.participants = participants
+        this.event.participants = participants
       })
     },
 
     fetchTasks () {
       Events.getTasks(this.event).then(tasks => {
-        this.tasks = tasks
+        this.event.tasks = tasks
       })
     },
 
@@ -200,100 +170,79 @@ export default {
     },
 
     attend () {
-      this.participant.rsvp = Participant.I_ATTEND
-      this.updateOrAddParticipant()
-    },
-
-    miss () {
-      this.participant.rsvp = Participant.I_MISS
-      this.updateOrAddParticipant()
+      this._saveParticipation(Participant.I_ATTEND)
     },
 
     unsure () {
-      this.participant.rsvp = Participant.I_DONT_KNOW
-      this.updateOrAddParticipant()
+      this._saveParticipation(Participant.I_DONT_KNOW)
+    },
+
+    miss () {
+      this._saveParticipation(Participant.I_MISS)
+    },
+
+    checkName () {
+      if (this.me.name) {
+        return Promise.resolve()
+      } else {
+        return new Promise((resolve, reject) => {
+          this.$refs.nameSelection.show().then(() => {
+            resolve()
+          })
+        })
+      }
+    },
+
+    _saveParticipation (rsvp) {
+      this.checkName().then(() => {
+        this.me.rsvp = rsvp
+
+        let promise
+        if (this.me.id) {
+          promise = Events.updateParticipant(this.event, this.me)
+        } else {
+          promise = Events.addParticipant(this.event, this.me)
+        }
+        promise.then(participant => {
+          this.me.setParticipant(participant)
+          this.fetchParticipants()
+        })
+      })
     },
 
     haveTask (task) {
-      return task.assignees.some(p => p.id === this.participant.id)
-    },
-
-    storeParticipation () {
-      localStorage.setItem(`event-${this.event.uri}`, this.participant.id)
-      localStorage.setItem('name', this.participant.name)
+      return task.assignees.some(p => p.id === this.me.id)
     },
 
     takeTask (task) {
-      if (!this.participant.name) {
-        this.$refs.nameSelection.show().then(() => {
-          this.takeTask(task)
+      this.checkName().then(() => {
+        Events.assignTask(this.event, task, this.me).then(participant => {
+          this.me.setParticipant(participant)
+          this.fetchTasks()
+          this.fetchParticipants() // in case a new participant has been added to the participation list
         })
-        return
-      }
-
-      Events.assignTask(this.event, task, this.participant).then(participant => {
-        if (participant) {
-          this.participant = participant
-          this.storeParticipation()
-        }
-        this.fetchTasks()
-        this.fetchParticipants()
       })
     },
 
     leaveTask (task) {
-      Events.leaveTask(this.event, task, this.participant).then(() => {
+      Events.leaveTask(this.event, task, this.me).then(() => {
         this.fetchTasks()
       })
     },
 
-    updateOrAddParticipant (participant = this.participant) {
-      if (!this.participant.name) {
-        this.$refs.nameSelection.show().then(() => {
-          this.updateOrAddParticipant(this.participant)
+    onRenameParticipant () {
+      if (this.me.id) { // save new name to db
+        Events.updateParticipant(this.event, this.me).then(participant => {
+          this.me.setParticipant(participant)
+          this.fetchTasks() // show new name in tasks
+          this.fetchParticipants() // show new name in participants list
         })
-        return
       }
-
-      let promise
-      if (this.participant.id) {
-        promise = Events.updateParticipant(this.event, participant)
-      } else {
-        promise = Events.addParticipant(this.event, participant)
-      }
-      promise.then(participant => {
-        if (participant) {
-          this.participant = participant
-          this.storeParticipation()
-        }
-        this.fetchParticipants()
-        this.fetchTasks()
-      })
-    },
-
-    onRenamePerson (name) {
-      this.participant.name = name
-      this.updateOrAddParticipant()
-    },
-
-    onAddPerson (name) {
-      this.participant.name = name
-      this.updateOrAddParticipant()
-    },
-
-    onResetPerson () {
-      localStorage.removeItem(`event-${this.event.uri}`)
-      localStorage.removeItem('name')
-      this.participant = new Participant()
-    },
-
-    onChangePerson (participant) {
-      this.participant = participant
-      this.storeParticipation()
     }
   },
 
   components: {
+    ParticipantList,
     EventLinkClipboard,
     NameSelection
   }

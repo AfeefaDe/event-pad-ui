@@ -36,6 +36,7 @@ class CurrentParticipant {
   // CurrentParticipant
 
   authenticateForEvent (event) {
+    this.participant = new Participant() // reset participant
     this.event = event
     const participantId = localStorage.getItem(`event-${event.uri}`)
     if (participantId) {

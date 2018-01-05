@@ -40,13 +40,16 @@
       </div>
     </section>
 
-    <section class="todos" v-if="event.tasks.length">
+    <section class="todos" v-if="event.checklists.length">
       <h2>Aufgaben</h2>
-      <div v-for="task in event.tasks" :key="task.id">
-        {{ task.name }}
-        <button class="button-green button-xs" href="" @click.prevent="takeTask(task)" v-if="!haveTask(task)">Ich mach das</button>
-        <button class="button-red button-xs" href="" @click.prevent="leaveTask(task)" v-if="haveTask(task)">Ich mach das doch nicht</button>
-        <participant-list :participants="task.assignees"></participant-list>
+      <div v-for="checklist in event.checklists" :key="checklist.id">
+        <strong>{{ checklist.title }}</strong>
+        <div v-for="task in checklist.tasks" :key="task.id">
+          <a href="" @click.prevent="checkTask(checklist, task)" :style="{ 'text-decoration': task.checked ? 'line-through' : 'none' }">Task: {{ task.name }}</a>
+          <button class="button-green button-xs" href="" @click.prevent="takeTask(checklist, task)" v-if="!haveTask(task)">Ich mach das</button>
+          <button class="button-red button-xs" href="" @click.prevent="leaveTask(checklist, task)" v-if="haveTask(task)">Ich mach das doch nicht</button>
+          <participant-list :participants="task.assignees"></participant-list>
+        </div>
       </div>
     </section>
 
@@ -159,9 +162,9 @@ export default {
       })
     },
 
-    fetchTasks () {
-      Events.getTasks(this.event).then(tasks => {
-        this.event.tasks = tasks
+    fetchChecklists () {
+      Events.getChecklists(this.event).then(checklists => {
+        this.event.checklists = checklists
       })
     },
 
@@ -181,7 +184,7 @@ export default {
       this._saveParticipation(Participant.I_MISS)
     },
 
-    checkName () {
+    _checkName () {
       if (this.me.name) {
         return Promise.resolve()
       } else {
@@ -194,7 +197,7 @@ export default {
     },
 
     _saveParticipation (rsvp) {
-      this.checkName().then(() => {
+      this._checkName().then(() => {
         this.me.rsvp = rsvp
 
         let promise
@@ -214,19 +217,26 @@ export default {
       return task.assignees.some(p => p.id === this.me.id)
     },
 
-    takeTask (task) {
-      this.checkName().then(() => {
-        Events.assignTask(this.event, task, this.me).then(participant => {
+    takeTask (checklist, task) {
+      this._checkName().then(() => {
+        Events.assignTask(this.event, checklist, task, this.me).then(participant => {
           this.me.setParticipant(participant)
-          this.fetchTasks()
-          this.fetchParticipants() // in case a new participant has been added to the participation list
+          this.fetchChecklists()
+          this.fetchParticipants() // new participant might been added to the participation list
         })
       })
     },
 
-    leaveTask (task) {
-      Events.leaveTask(this.event, task, this.me).then(() => {
-        this.fetchTasks()
+    checkTask (checklist, task) {
+      task.checked = !task.checked
+      Events.updateTask(this.event, checklist, task).then(() => {
+        this.fetchChecklists()
+      })
+    },
+
+    leaveTask (checklist, task) {
+      Events.leaveTask(this.event, checklist, task, this.me).then(() => {
+        this.fetchChecklists()
       })
     },
 
@@ -234,7 +244,7 @@ export default {
       if (this.me.id) { // save new name to db
         Events.updateParticipant(this.event, this.me).then(participant => {
           this.me.setParticipant(participant)
-          this.fetchTasks() // show new name in tasks
+          this.fetchChecklists() // show new name in tasks
           this.fetchParticipants() // show new name in participants list
         })
       }

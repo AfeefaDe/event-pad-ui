@@ -35,8 +35,7 @@ export default {
 
   methods: {
     selectParticipant (participant) {
-      this.me.setParticipant(participant)
-      this.$emit('onSelect')
+      this.$emit('onSelect', participant)
     },
 
     isMe (participant) {

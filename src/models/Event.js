@@ -1,5 +1,5 @@
 import Participant from './Participant'
-import Task from './Task'
+import Checklist from './Checklist'
 
 export default class Event {
   constructor () {
@@ -20,7 +20,7 @@ export default class Event {
     this.uri = ''
 
     this.participants = []
-    this.tasks = []
+    this.checklists = []
   }
 
   deserialize (json) {
@@ -41,11 +41,11 @@ export default class Event {
       }
     }
 
-    if (json.tasks) {
-      for (let taskJson of json.tasks) {
-        const task = new Task()
-        task.deserialize(taskJson)
-        this.tasks.push(task)
+    if (json.checklists) {
+      for (let checklistJson of json.checklists) {
+        const checklist = new Checklist()
+        checklist.deserialize(checklistJson)
+        this.checklists.push(checklist)
       }
     }
   }
@@ -59,6 +59,14 @@ export default class Event {
       dateStart: this.dateStart,
       uri: this.uri
     }
+
+    if (this.checklists.length) {
+      data.checklists = []
+      for (let checklist of this.checklists) {
+        data.checklists.push(checklist.serialize())
+      }
+    }
+
     return data
   }
 

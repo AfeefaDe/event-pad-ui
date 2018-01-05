@@ -36,7 +36,7 @@
               <participant-list
                 :participants="event.participants"
                 :selectable="true"
-                @onSelect="hide">
+                @onSelect="setParticipant">
               </participant-list>
             </section>
           </div>
@@ -129,6 +129,11 @@ export default {
 
     add () {
       this.me.name = this.participantName
+      this.hide()
+    },
+
+    setParticipant (participant) {
+      this.me.setParticipant(participant)
       this.hide()
     },
 

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Event from '@/models/Event'
 import Participant from '@/models/Participant'
-import Task from '@/models/Task'
+import Checklist from '@/models/Checklist'
 
 export default class EventsResource {
   static createEvent (event) {
@@ -58,15 +58,15 @@ export default class EventsResource {
     })
   }
 
-  static getTasks (event) {
-    return Vue.http.get(`/api/events/${event.uri}/tasks`).then(response => {
-      const tasks = []
+  static getChecklists (event, checklist) {
+    return Vue.http.get(`/api/events/${event.uri}/checklists`).then(response => {
+      const checklists = []
       for (const json of response.body) {
-        const task = new Task()
-        task.deserialize(json)
-        tasks.push(task)
+        const checklist = new Checklist()
+        checklist.deserialize(json)
+        checklists.push(checklist)
       }
-      return tasks
+      return checklists
     }).catch(response => {
       console.log('get hat nicht geklappt', response)
       return false
@@ -82,22 +82,31 @@ export default class EventsResource {
     return Vue.http.post(`/api/events/${event.uri}/tasks`, serializedTasks).then(response => {
       return true
     }).catch(response => {
-      console.log('post hat nicht geklappt', response)
+      console.log('create hat nicht geklappt', response)
       return false
     })
   }
 
-  static assignTask (event, task, participant) {
-    return Vue.http.post(`/api/events/${event.uri}/tasks/${task.id}/participants`, participant.serialize()).then(response => {
+  static assignTask (event, checklist, task, participant) {
+    return Vue.http.post(`/api/events/${event.uri}/checklists/${checklist.id}/tasks/${task.id}/assignees`, participant.serialize()).then(response => {
       return Participant.fromJson(response.body)
     }).catch(response => {
-      console.log('post hat nicht geklappt', response)
+      console.log('assign hat nicht geklappt', response)
       return false
     })
   }
 
-  static leaveTask (event, task, assignee) {
-    return Vue.http.delete(`/api/events/${event.uri}/tasks/${task.id}/participants/${assignee.id}`).then(response => {
+  static updateTask (event, checklist, task) {
+    return Vue.http.patch(`/api/events/${event.uri}/checklists/${checklist.id}/tasks/${task.id}`, task.serialize()).then(response => {
+      return true
+    }).catch(response => {
+      console.log('update hat nicht geklappt', response)
+      return false
+    })
+  }
+
+  static leaveTask (event, checklist, task, assignee) {
+    return Vue.http.delete(`/api/events/${event.uri}/checklists/${checklist.id}/tasks/${task.id}/assignees/${assignee.id}`).then(response => {
       return true
     }).catch(response => {
       console.log('delete hat nicht geklappt', response)
